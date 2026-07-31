@@ -24,3 +24,10 @@ dependencyResolutionManagement {
 
 rootProject.name = "Song Scribe"
 include(":app")
+include(":core:presentation:designsystem")
+include(":core:domain")
+include(":core:data")
+include(":core:presentation:ui")
+include(":core:database")
+include(":demos")
+include(":demos:presentation")
