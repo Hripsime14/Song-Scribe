@@ -125,7 +125,7 @@ fun SongScribeTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = SongScribeTypography,
         content = content
     )
 }
