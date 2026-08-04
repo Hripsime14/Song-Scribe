@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,9 +20,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.song.core.presentation.designsystem.components.SongScribeToolbar
 import com.song.core.presentation.designsystem.theme.SongScribeTheme
 import com.song.demos.presentation.R
+import com.song.demos.presentation.demos.components.DemoListItem
 import com.song.demos.presentation.demos.components.DemoSearchBar
+import com.song.demos.presentation.demos.model.DemoModel
+import com.song.demos.presentation.demos.model.RecordingItem
 
 @Composable
 fun DemosScreenRoot(
@@ -35,43 +40,65 @@ fun DemosScreenRoot(
 fun DemosScreen(
     modifier: Modifier = Modifier,
 ) {
-    Box (
-        modifier = modifier.fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            SongScribeToolbar(
+                title = stringResource(R.string.my_demos),
+            )
+        }
+    ) { padding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                DemoSearchBar(
+                    modifier = Modifier.fillMaxWidth()
+                )
                 Text(
-                    text = stringResource(R.string.my_demos),
-                    fontSize = 24.sp,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(R.string.recordings, 2),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.secondary
                 )
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = stringResource(R.string.my_demos)
+            DemoListItem(
+                modifier = Modifier,
+                demoModel = DemoModel(
+                    id = "1",
+                    title = "Yellow Stone",
+                    date = "21/07/2022",
+                    colorLabel = MaterialTheme.colorScheme.tertiaryFixed,
+                    recordings = listOf(
+                        RecordingItem(
+                            id = "1",
+                            title = "First Take",
+                            duration = 33,
+                            isPrimary = true,
+                            recording = "",
+                            currentDuration = 15,
+                        ),
+                        RecordingItem(
+                            id = "2",
+                            title = "Second Take",
+                            duration = 40,
+                            isPrimary = false,
+                            recording = "",
+                            currentDuration = 15,
+                        )
+                    ),
+                    genres = listOf("piano", "guitar", "drums", "piano", "guitar", "drums", "piano", "guitar", "drums"),
+                    moreRecordingCount = 2
                 )
+            )
             }
-            DemoSearchBar(
-                modifier = Modifier.fillMaxWidth()
-            )
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(R.string.recordings, 2),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.secondary
-            )
-//            DemoListItem(
-//            )
         }
     }
 }

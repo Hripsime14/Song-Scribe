@@ -28,7 +28,7 @@ fun DemoSearchBar(
 ) {
     TextField(
         modifier = modifier
-            .height(50.dp)
+            .height(45.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(32.dp)),
         state = TextFieldState(

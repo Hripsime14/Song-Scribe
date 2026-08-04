@@ -36,8 +36,8 @@ import androidx.compose.ui.unit.dp
 import com.song.core.presentation.designsystem.components.SongScribeBeige
 import com.song.core.presentation.designsystem.components.SongScribeButton
 import com.song.core.presentation.designsystem.theme.SongScribeTheme
-import com.song.core.presentation.ui.util.addDefaultStartPadding
-import com.song.core.presentation.ui.util.addDefaultTopPadding
+import com.song.core.presentation.designsystem.extension.addDefaultStartPadding
+import com.song.core.presentation.designsystem.extension.addDefaultTopPadding
 import com.song.core.presentation.ui.util.formatAsDuration
 import com.song.demos.presentation.demos.model.DemoModel
 import com.song.demos.presentation.demos.model.RecordingItem
@@ -72,7 +72,7 @@ fun DemoListItem(
         Box(modifier = modifier
             .background(color = demoModel.colorLabel)
             .height(200.dp)
-            .width(8.dp)
+            .width(6.dp)
             .padding(8.dp)
         )
         Column(

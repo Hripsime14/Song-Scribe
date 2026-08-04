@@ -1,4 +1,4 @@
-package com.song.core.presentation.ui.util
+package com.song.core.presentation.designsystem.extension
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
