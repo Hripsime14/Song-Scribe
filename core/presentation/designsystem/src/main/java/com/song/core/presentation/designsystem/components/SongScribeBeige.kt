@@ -9,30 +9,40 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.song.core.presentation.designsystem.theme.SongScribeTheme
 
 @Composable
-fun DemoGenreView(modifier: Modifier = Modifier, text: String) {
+fun SongScribeBeige(
+    modifier: Modifier = Modifier,
+    text: String,
+    containerColor: Color,
+    textColor: Color
+) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(32.dp))
-            .background(color = MaterialTheme.colorScheme.surfaceVariant)
+            .background(color = containerColor)
             .padding(horizontal = 8.dp, vertical = 2.dp)
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = textColor,
         )
     }
 }
 
 @Preview
 @Composable
-private fun DemoGenreViewPreview() {
+private fun SongScribeBeigePreview() {
     SongScribeTheme {
-        DemoGenreView(text = "piano")
+        SongScribeBeige(
+            text = "piano",
+            containerColor = MaterialTheme.colorScheme.primary,
+            textColor = MaterialTheme.colorScheme.onPrimary,
+            )
     }
 }

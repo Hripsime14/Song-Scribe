@@ -1,11 +1,13 @@
 package com.song.demos.presentation.demos.components
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,23 +24,41 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.song.core.presentation.designsystem.components.DemoGenreView
+import com.song.core.presentation.designsystem.components.SongScribeBeige
 import com.song.core.presentation.designsystem.components.SongScribeButton
 import com.song.core.presentation.designsystem.theme.SongScribeTheme
 import com.song.core.presentation.ui.util.addDefaultStartPadding
 import com.song.core.presentation.ui.util.addDefaultTopPadding
-import com.song.demos.presentation.R
+import com.song.core.presentation.ui.util.formatAsDuration
+import com.song.demos.presentation.demos.model.DemoModel
+import com.song.demos.presentation.demos.model.RecordingItem
 
 @Composable
-fun DemoListItem(modifier: Modifier = Modifier) {
+fun DemoListItem(
+    modifier: Modifier = Modifier,
+    demoModel: DemoModel
+) {
+    val primaryRecording = remember(demoModel.recordings) {
+        demoModel.recordings.first { it.isPrimary }
+    }
+    val playbackProgress = if (primaryRecording.duration > 0) {
+        primaryRecording.currentDuration.toFloat() / primaryRecording.duration.toFloat()
+    } else {
+        0f
+    }
+    val animatedProgress by animateFloatAsState(
+        targetValue = playbackProgress.coerceIn(0f, 1f),
+        label = "playbackProgress"
+    )
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -50,7 +70,7 @@ fun DemoListItem(modifier: Modifier = Modifier) {
             )
     ) {
         Box(modifier = modifier
-            .background(color = MaterialTheme.colorScheme.tertiaryContainer)
+            .background(color = demoModel.colorLabel)
             .height(200.dp)
             .width(8.dp)
             .padding(8.dp)
@@ -67,8 +87,8 @@ fun DemoListItem(modifier: Modifier = Modifier) {
             ) {
                 Icon(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(4.dp))
-                        .background(color = MaterialTheme.colorScheme.primary)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(color = demoModel.colorLabel)
                         .padding(8.dp),
                     imageVector = Icons.Default.MusicNote,
                     contentDescription = "Note",
@@ -82,14 +102,27 @@ fun DemoListItem(modifier: Modifier = Modifier) {
                     verticalArrangement = Arrangement.SpaceAround
                 ) {
                     Text(
-                        text = stringResource(R.string.search),
+                        text = demoModel.title,
                         style = MaterialTheme.typography.titleSmall
                     )
-                    Text(
-                        text = "21/07/2022",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.secondary,
-                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = demoModel.date,
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.secondary,
+                        )
+                        SongScribeBeige(
+                            text = "+${demoModel.moreRecordingCount} more",
+                            modifier = Modifier
+                                .addDefaultStartPadding(),
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            textColor = MaterialTheme.colorScheme.onPrimary,
+                        )
+                    }
                 }
                 Icon(
                     modifier = Modifier.align(Alignment.CenterVertically),
@@ -104,7 +137,7 @@ fun DemoListItem(modifier: Modifier = Modifier) {
                     .addDefaultTopPadding()
                     .addDefaultTopPadding(),
                 style = MaterialTheme.typography.bodyMedium,
-                text = stringResource(R.string.first_take),
+                text = primaryRecording.title,
                 color = MaterialTheme.colorScheme.secondary
             )
             Row(
@@ -119,16 +152,31 @@ fun DemoListItem(modifier: Modifier = Modifier) {
                 )
                 Text(
                     modifier = Modifier
-                        .weight(1f)
                         .addDefaultStartPadding(),
-                    text = "0:33",
+                    text = primaryRecording.currentDuration.formatAsDuration(),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary,
                 )
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .addDefaultStartPadding()
+                        .height(8.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(color = MaterialTheme.colorScheme.surfaceVariant)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(animatedProgress)
+                            .fillMaxHeight()
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(color = MaterialTheme.colorScheme.primary)
+                    )
+                }
                 Text(
                     modifier = Modifier
                         .addDefaultStartPadding(),
-                    text = "3:01",
+                    text = primaryRecording.duration.formatAsDuration(),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary,
                 )
@@ -140,11 +188,13 @@ fun DemoListItem(modifier: Modifier = Modifier) {
                     .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-               val list = listOf("piano", "guitar", "drums", "piano", "guitar", "drums", "piano", "guitar", "drums")
+               val list = demoModel.genres
                list.forEach {
-                   DemoGenreView(
+                   SongScribeBeige(
                        text = it,
-                       modifier = Modifier.addDefaultTopPadding()
+                       modifier = Modifier.addDefaultTopPadding(),
+                       containerColor = MaterialTheme.colorScheme.outlineVariant,
+                       textColor = MaterialTheme.colorScheme.onSurfaceVariant,
                    )
                }
             }
@@ -153,10 +203,37 @@ fun DemoListItem(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun DemoListItemPreview() {
     SongScribeTheme {
-        DemoListItem()
+        DemoListItem(
+            demoModel = DemoModel(
+                id = "1",
+                title = "Yellow Stone",
+                date = "21/07/2022",
+                colorLabel = MaterialTheme.colorScheme.tertiaryFixed,
+                recordings = listOf(
+                    RecordingItem(
+                        id = "1",
+                        title = "First Take",
+                        duration = 33,
+                        isPrimary = true,
+                        recording = "",
+                        currentDuration = 15,
+                    ),
+                    RecordingItem(
+                        id = "2",
+                        title = "Second Take",
+                        duration = 40,
+                        isPrimary = false,
+                        recording = "",
+                        currentDuration = 15,
+                    )
+                ),
+                genres = listOf("piano", "guitar", "drums", "piano", "guitar", "drums", "piano", "guitar", "drums"),
+                moreRecordingCount = 2
+            )
+        )
     }
 }
