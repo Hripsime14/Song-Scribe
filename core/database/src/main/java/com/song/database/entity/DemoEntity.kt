@@ -6,7 +6,9 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "demo")
 data class DemoEntity(
     @PrimaryKey
-    val id: Int,
-    val name: String,
-    val description: String
+    val id: String,
+    val title: String,
+    val createdAtMillis: Long,
+    val colorLabel: Long,
+    val genres: List<String>
 )

@@ -39,16 +39,16 @@ import com.song.core.presentation.designsystem.theme.SongScribeTheme
 import com.song.core.presentation.designsystem.extension.addDefaultStartPadding
 import com.song.core.presentation.designsystem.extension.addDefaultTopPadding
 import com.song.core.presentation.ui.util.formatAsDuration
-import com.song.demos.presentation.demos.model.DemoModel
-import com.song.demos.presentation.demos.model.RecordingItem
+import com.song.demos.presentation.demos.model.DemoUi
+import com.song.demos.presentation.demos.model.RecordingUi
 
 @Composable
 fun DemoListItem(
     modifier: Modifier = Modifier,
-    demoModel: DemoModel
+    demoUi: DemoUi
 ) {
-    val primaryRecording = remember(demoModel.recordings) {
-        demoModel.recordings.first { it.isPrimary }
+    val primaryRecording = remember(demoUi.recordings) {
+        demoUi.recordings.first { it.isPrimary }
     }
     val playbackProgress = if (primaryRecording.duration > 0) {
         primaryRecording.currentDuration.toFloat() / primaryRecording.duration.toFloat()
@@ -60,23 +60,23 @@ fun DemoListItem(
         label = "playbackProgress"
     )
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(32.dp))
-            .background(Color.White)
             .shadow(
                 elevation = 2.dp,
                 shape = RoundedCornerShape(32.dp)
             )
+            .clip(RoundedCornerShape(32.dp))
+            .background(Color.White)
     ) {
-        Box(modifier = modifier
-            .background(color = demoModel.colorLabel)
+        Box(modifier = Modifier
+            .background(color = demoUi.colorLabel)
             .height(200.dp)
             .width(6.dp)
             .padding(8.dp)
         )
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
@@ -88,7 +88,7 @@ fun DemoListItem(
                 Icon(
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
-                        .background(color = demoModel.colorLabel)
+                        .background(color = demoUi.colorLabel)
                         .padding(8.dp),
                     imageVector = Icons.Default.MusicNote,
                     contentDescription = "Note",
@@ -102,7 +102,7 @@ fun DemoListItem(
                     verticalArrangement = Arrangement.SpaceAround
                 ) {
                     Text(
-                        text = demoModel.title,
+                        text = demoUi.title,
                         style = MaterialTheme.typography.titleSmall
                     )
                     Row(
@@ -111,12 +111,12 @@ fun DemoListItem(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = demoModel.date,
+                            text = demoUi.date,
                             style = MaterialTheme.typography.titleSmall,
                             color = MaterialTheme.colorScheme.secondary,
                         )
                         SongScribeBeige(
-                            text = "+${demoModel.moreRecordingCount} more",
+                            text = "+${demoUi.moreRecordingCount} more",
                             modifier = Modifier
                                 .addDefaultStartPadding(),
                             containerColor = MaterialTheme.colorScheme.primary,
@@ -188,7 +188,7 @@ fun DemoListItem(
                     .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-               val list = demoModel.genres
+               val list = demoUi.genres
                list.forEach {
                    SongScribeBeige(
                        text = it,
@@ -208,13 +208,13 @@ fun DemoListItem(
 private fun DemoListItemPreview() {
     SongScribeTheme {
         DemoListItem(
-            demoModel = DemoModel(
+            demoUi = DemoUi(
                 id = "1",
                 title = "Yellow Stone",
                 date = "21/07/2022",
                 colorLabel = MaterialTheme.colorScheme.tertiaryFixed,
                 recordings = listOf(
-                    RecordingItem(
+                    RecordingUi(
                         id = "1",
                         title = "First Take",
                         duration = 33,
@@ -222,7 +222,7 @@ private fun DemoListItemPreview() {
                         recording = "",
                         currentDuration = 15,
                     ),
-                    RecordingItem(
+                    RecordingUi(
                         id = "2",
                         title = "Second Take",
                         duration = 40,

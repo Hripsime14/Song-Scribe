@@ -45,6 +45,7 @@ dependencies {
 
     implementation(project(":core:presentation:designsystem"))
     implementation(project(":core:presentation:ui"))
+    implementation(project(":demos:domain"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)

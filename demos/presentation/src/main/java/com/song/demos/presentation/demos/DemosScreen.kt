@@ -3,13 +3,10 @@ package com.song.demos.presentation.demos
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -19,29 +16,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.song.core.presentation.designsystem.components.SongScribeToolbar
 import com.song.core.presentation.designsystem.theme.SongScribeTheme
 import com.song.demos.presentation.R
 import com.song.demos.presentation.demos.components.DemoListItem
 import com.song.demos.presentation.demos.components.DemoSearchBar
-import com.song.demos.presentation.demos.model.DemoModel
-import com.song.demos.presentation.demos.model.RecordingItem
+import com.song.demos.presentation.demos.model.DemoUi
+import com.song.demos.presentation.demos.model.RecordingUi
 
 @Composable
 fun DemosScreenRoot(
     modifier: Modifier = Modifier,
     onNavigateToDetail: () -> Unit
 ) {
-    DemosScreen()
+    DemosScreen(modifier = modifier.fillMaxSize())
 }
 
 @Composable
 fun DemosScreen(
     modifier: Modifier = Modifier,
 ) {
+    val searchState = rememberTextFieldState()
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         topBar = {
             SongScribeToolbar(
                 title = stringResource(R.string.my_demos),
@@ -61,7 +58,8 @@ fun DemosScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 DemoSearchBar(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    state = searchState
                 )
                 Text(
                     modifier = Modifier.fillMaxWidth(),
@@ -71,13 +69,13 @@ fun DemosScreen(
                 )
             DemoListItem(
                 modifier = Modifier,
-                demoModel = DemoModel(
+                demoUi = DemoUi(
                     id = "1",
                     title = "Yellow Stone",
                     date = "21/07/2022",
                     colorLabel = MaterialTheme.colorScheme.tertiaryFixed,
                     recordings = listOf(
-                        RecordingItem(
+                        RecordingUi(
                             id = "1",
                             title = "First Take",
                             duration = 33,
@@ -85,7 +83,7 @@ fun DemosScreen(
                             recording = "",
                             currentDuration = 15,
                         ),
-                        RecordingItem(
+                        RecordingUi(
                             id = "2",
                             title = "Second Take",
                             duration = 40,

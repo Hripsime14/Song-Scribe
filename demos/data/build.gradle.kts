@@ -1,11 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.room)
 }
 
 android {
-    namespace = "com.song.database"
+    namespace = "com.song.demos.data"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -19,14 +17,10 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
-}
-
-room {
-    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
@@ -36,8 +30,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
-    api(libs.room.runtime)
-    implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
-    api(libs.kotlinx.coroutines.core)
+    implementation(project(":demos:domain"))
+    implementation(project(":core:database"))
 }
