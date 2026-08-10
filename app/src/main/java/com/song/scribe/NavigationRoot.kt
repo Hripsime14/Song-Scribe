@@ -6,8 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.song.demos.presentation.addnewdemo.AddNewDemoScreenRoot
 import com.song.demos.presentation.demos.DemosScreenRoot
-import com.song.demos.presentation.details.DemoDetailScreenRoot
 
 @Composable
 fun NavigationRoot(
@@ -30,13 +30,13 @@ private fun NavGraphBuilder.demosGraph(
     ) {
         composable(route = "demos") {
             DemosScreenRoot(
-                onNavigateToDetail = {
-                    navController.navigate("detail")
+                onNavigateToAddNewDemo = {
+                    navController.navigate("add_new_demo")
                 }
             )
         }
-        composable(route = "detail") {
-            DemoDetailScreenRoot(
+        composable(route = "add_new_demo") {
+            AddNewDemoScreenRoot(
                 onSaveChanges = {
                     navController.navigateUp()
                 }

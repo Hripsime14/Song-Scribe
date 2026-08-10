@@ -1,6 +1,8 @@
 package com.song.core.presentation.designsystem.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.song.core.presentation.designsystem.theme.SongScribeTheme
 
@@ -28,17 +31,24 @@ fun SongScribePositiveButton(
     text: String,
     containerColor: Color,
     textColor: Color,
+    hasBorder: Boolean = false,
+    cornerShape: Dp = 32.dp,
     onClick: () -> Unit
 ) {
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(32.dp))
+            .clip(RoundedCornerShape(cornerShape))
+            .border(
+                width = 0.5.dp,
+                color = if (hasBorder) MaterialTheme.colorScheme.outline else Color.Transparent,
+                shape = RoundedCornerShape(cornerShape)
+            )
             .background(containerColor)
+            .clickable(onClick = onClick, interactionSource = null, indication = null)
             .padding(horizontal = 8.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-//            imageVector = Icons.Default.Check,
             imageVector = icon,
             contentDescription = text,
             tint = textColor
@@ -88,7 +98,8 @@ private fun SongScribeAddButtonPreview() {
             text = "Add",
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             textColor = MaterialTheme.colorScheme.primary,
-            onClick = {}
+            onClick = {},
+            cornerShape = 16.dp
         )
     }
 }

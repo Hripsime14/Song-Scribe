@@ -5,6 +5,7 @@ import com.song.demos.domain.repo.model.Demo
 import com.song.demos.domain.repo.model.Recording
 import com.song.demos.presentation.demos.model.DemoUi
 import com.song.demos.presentation.demos.model.RecordingUi
+import com.song.demos.presentation.demos.model.TagModel
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -31,4 +32,11 @@ fun Recording.toRecordingItem(): RecordingUi = RecordingUi(
     currentDuration = 0,
     isPrimary = isPrimary,
     recording = filePath
+)
+
+fun List<String>.toTagModels(): List<TagModel> = map ( String::toTagModel )
+
+fun String.toTagModel(): TagModel = TagModel(
+    name = this,
+    isSelected = false
 )

@@ -7,6 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,14 +31,18 @@ import com.song.demos.presentation.demos.model.RecordingUi
 @Composable
 fun DemosScreenRoot(
     modifier: Modifier = Modifier,
-    onNavigateToDetail: () -> Unit
+    onNavigateToAddNewDemo: () -> Unit
 ) {
-    DemosScreen(modifier = modifier.fillMaxSize())
+    DemosScreen(
+        modifier = modifier.fillMaxSize(),
+        onAddDemoClick = onNavigateToAddNewDemo
+    )
 }
 
 @Composable
 fun DemosScreen(
     modifier: Modifier = Modifier,
+    onAddDemoClick: () -> Unit = {},
 ) {
     val searchState = rememberTextFieldState()
     Scaffold(
@@ -43,6 +51,18 @@ fun DemosScreen(
             SongScribeToolbar(
                 title = stringResource(R.string.my_demos),
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onAddDemoClick,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.new_demo)
+                )
+            }
         }
     ) { padding ->
         Box(

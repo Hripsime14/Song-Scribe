@@ -4,4 +4,30 @@
     <string name="search">Search</string>
     <string name="recordings">%d recordings</string>
     <string name="first_take">First take</string>
+    <string name="give_your_demo_name">Give your demo a name...</string>
+    <string name="demo_title">DEMO TITLE*</string>
+    <string name="color_label">COLOR LABEL</string>
+    <string name="tags">TAGS</string>
+    <string name="lyrics_notes">LYRICS &amp; NOTES</string>
+    <string name="lyrics_notes_progressions_ideas">Lyrics, notes, progressions, ideas...</string>
+    <string name="custom">Custom</string>
+    <string name="new_demo">New Demo</string>
+    <string name="add_tag">Add tag...</string>
+    <string name="add">Add</string>
+
+    <string-array name="instruments">
+        <item>piano</item>
+        <item>guitar</item>
+        <item>ambient</item>
+        <item>lo-fi</item>
+        <item>loop</item>
+        <item>R&amp;B</item>
+        <item>acoustic</item>
+        <item>live</item>
+        <item>instrumental</item>
+        <item>folk</item>
+        <item>electronic</item>
+        <item>jazz</item>
+        <item>pop</item>
+    </string-array>
 </resources>
