@@ -6,8 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.song.demos.domain.repo.DemosRepo
 import com.song.demos.presentation.demos.mapper.toDemoModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +21,7 @@ import kotlinx.coroutines.launch
 
 class DemosScreenViewModel(
     private val demosRepo: DemosRepo
-): ViewModel() {
+) : ViewModel() {
 
     val searchState = TextFieldState()
 
@@ -38,6 +36,11 @@ class DemosScreenViewModel(
             .debounce(SEARCH_DEBOUNCE_MILLIS)
             .distinctUntilChanged()
             .flatMapLatest { query -> demosRepo.searchDemos(query.trim()) }
+            .catch { throwable ->
+                _state.update { state ->
+                    state.copy(isLoading = false, error = throwable.message)
+                }
+            }
             .onEach { demos ->
                 _state.update { state ->
                     state.copy(
@@ -46,11 +49,6 @@ class DemosScreenViewModel(
                         isLoading = false,
                         error = null
                     )
-                }
-            }
-            .catch { throwable ->
-                _state.update { state ->
-                    state.copy(isLoading = false, error = throwable.message)
                 }
             }
             .launchIn(viewModelScope)
@@ -63,16 +61,34 @@ class DemosScreenViewModel(
                     eventChannel.send(DemosScreenEvent.AddDemoEvent)
                 }
             }
+
             is DemosScreenAction.onItemClick -> {
                 viewModelScope.launch {
                     eventChannel.send(DemosScreenEvent.OpenDemoDetailEvent)
                 }
             }
-            is DemosScreenAction.onMoreClick -> {
-                viewModelScope.launch {
-                    eventChannel.send(DemosScreenEvent.OpenMoreEvent)
+
+            is DemosScreenAction.onDeleteRequest -> {
+                _state.update { state ->
+                    state.copy(showDeleteDialog = true, deletingDemoId = action.demoId)
                 }
             }
+
+            DemosScreenAction.onDismissDeleteDialog -> {
+                _state.update { state ->
+                    state.copy(showDeleteDialog = false, deletingDemoId = "")
+                }
+            }
+
+            DemosScreenAction.onAcceptDeleteDialog -> {
+                viewModelScope.launch {
+                    demosRepo.deleteDemo(_state.value.deletingDemoId)
+                }
+                _state.update { state ->
+                    state.copy(showDeleteDialog = false, deletingDemoId = "")
+                }
+            }
+
             is DemosScreenAction.onTogglePlayClick -> TODO()
         }
     }

@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface DemosRepo {
     fun observeDemos(): Flow<List<Demo>>
     fun searchDemos(query: String): Flow<List<Demo>>
+    suspend fun deleteDemo(demoId: String)
 }

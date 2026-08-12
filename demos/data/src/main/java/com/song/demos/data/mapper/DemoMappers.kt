@@ -12,6 +12,7 @@ fun DemoWithRecordings.toDemo(): Demo = Demo(
     createdAtMillis = demo.createdAtMillis,
     colorLabel = demo.colorLabel,
     genres = demo.genres,
+    lyrics = demo.lyrics,
     recordings = recordings.map { it.toRecording() }
 )
 
@@ -29,7 +30,8 @@ fun Demo.toDemoEntity(): DemoEntity = DemoEntity(
     title = title,
     createdAtMillis = createdAtMillis,
     colorLabel = colorLabel,
-    genres = genres
+    genres = genres,
+    lyrics = lyrics
 )
 
 fun Demo.toRecordingEntities(): List<RecordingEntity> =

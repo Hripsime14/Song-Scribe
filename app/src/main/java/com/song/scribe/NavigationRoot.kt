@@ -39,6 +39,9 @@ private fun NavGraphBuilder.demosGraph(
             AddNewDemoScreenRoot(
                 onSaveChanges = {
                     navController.navigateUp()
+                },
+                onDemoCreated = {
+                    navController.navigateUp()
                 }
             )
         }

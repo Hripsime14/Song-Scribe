@@ -22,4 +22,8 @@ class DemosRepoImpl(
             demos.map { it.toDemo() }
         }
     }
+
+    override suspend fun deleteDemo(demoId: String) {
+        demoDao.deleteDemo(demoId)
+    }
 }

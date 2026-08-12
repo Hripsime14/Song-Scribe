@@ -1,47 +1,93 @@
 package com.song.demos.presentation.addnewdemo
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.song.core.presentation.designsystem.components.SongScribeToolbar
 import com.song.core.presentation.designsystem.theme.SongScribeTheme
+import com.song.core.presentation.ui.util.ObserveAsEvents
 import com.song.demos.presentation.R
 import com.song.demos.presentation.addnewdemo.components.ColorLabelSection
 import com.song.demos.presentation.addnewdemo.components.DemoTitleSection
+import com.song.demos.presentation.addnewdemo.components.InfoSection
 import com.song.demos.presentation.addnewdemo.components.LyricsSection
 import com.song.demos.presentation.addnewdemo.components.RecordingSection
 import com.song.demos.presentation.addnewdemo.components.TagSection
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AddNewDemoScreenRoot(
     onSaveChanges: () -> Unit,
-    viewModel: AddNewDemoViewModel = viewModel()
+    onDemoCreated: () -> Unit,
+    viewModel: AddNewDemoViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val tagOptions = stringArrayResource(R.array.instruments).toList()
+    val context = LocalContext.current
 
     LaunchedEffect(tagOptions) {
         viewModel.onAction(AddNewDemoAction.OnTagOptionsLoaded(tagOptions))
     }
 
+    ObserveAsEvents(flow = viewModel.events) { event ->
+        when (event) {
+            AddNewDemoEvent.DemoCreated -> onDemoCreated()
+            is AddNewDemoEvent.DemoCreationFailed -> Toast.makeText(
+                context,
+                event.message ?: context.getString(R.string.demo_creation_failed),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            viewModel.onAction(AddNewDemoAction.OnToggleRecording)
+        }
+    }
+
     AddNewDemoScreen(
         state = state,
-        onAction = viewModel::onAction,
+        onAction = { action ->
+            val needsPermission = action == AddNewDemoAction.OnToggleRecording &&
+                    !state.isRecording &&
+                    ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.RECORD_AUDIO
+                    ) != PackageManager.PERMISSION_GRANTED
+
+            if (needsPermission) {
+                permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+            } else {
+                viewModel.onAction(action)
+            }
+        },
         onCloseClick = onSaveChanges
     )
 }
@@ -59,7 +105,21 @@ fun AddNewDemoScreen(
             SongScribeToolbar(
                 title = stringResource(R.string.new_demo),
                 showCloseButton = true,
-                onCloseClick = onCloseClick
+                onCloseClick = onCloseClick,
+                endButton = {
+                    val canCreate = state.titleTextState.text.isNotBlank() &&
+                            state.recordingFilePath != null &&
+                            !state.isSaving
+                    TextButton(
+                        onClick = { onAction(AddNewDemoAction.OnCreateDemoClick) },
+                        enabled = canCreate
+                    ) {
+                        Text(
+                            text = stringResource(R.string.create),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                }
             )
         }
     ) { padding ->
@@ -75,8 +135,13 @@ fun AddNewDemoScreen(
                 when (section) {
                     NewDemoSections.Recording -> RecordingSection(
                         isRecording = state.isRecording,
+                        hasRecording = !state.isRecording && state.recordingFilePath != null,
+                        recordingSeconds = state.recordingSeconds,
                         onToggleRecording = {
                             onAction(AddNewDemoAction.OnToggleRecording)
+                        },
+                        onDiscardRecording = {
+                            onAction(AddNewDemoAction.OnDiscardRecording)
                         }
                     )
 
@@ -110,7 +175,7 @@ fun AddNewDemoScreen(
                         lyricsState = state.lyricsTextState
                     )
 
-
+                    NewDemoSections.Info -> InfoSection()
                 }
             }
         }

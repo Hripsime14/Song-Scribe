@@ -37,7 +37,7 @@ fun LyricsSection(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .height(300.dp)
+            .height(220.dp)
             .addDefaultTopPadding()
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surfaceContainer),

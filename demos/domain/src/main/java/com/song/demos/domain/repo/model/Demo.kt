@@ -6,5 +6,6 @@ data class Demo(
     val createdAtMillis: Long,
     val colorLabel: Long,
     val genres: List<String>,
+    val lyrics: String,
     val recordings: List<Recording>
 )

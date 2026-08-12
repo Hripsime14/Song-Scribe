@@ -3,6 +3,7 @@
     <string name="my_demos">My demos</string>
     <string name="search">Search</string>
     <string name="recordings">%d recordings</string>
+    <string name="no_demos_yet">No demos yet</string>
     <string name="first_take">First take</string>
     <string name="give_your_demo_name">Give your demo a name...</string>
     <string name="demo_title">DEMO TITLE*</string>
@@ -12,8 +13,18 @@
     <string name="lyrics_notes_progressions_ideas">Lyrics, notes, progressions, ideas...</string>
     <string name="custom">Custom</string>
     <string name="new_demo">New Demo</string>
+    <string name="create">Create</string>
+    <string name="demo_creation_failed">Could not create the demo</string>
     <string name="add_tag">Add tag...</string>
     <string name="add">Add</string>
+    <string name="record_something">Record something to create a demo</string>
+    <string name="recording">Recording...</string>
+    <string name="ready">Ready</string>
+    <string name="tap_to_record">Tap to Record</string>
+    <string name="discard_and_rerecord">"Discard &amp; re-record"</string>
+    <string name="are_you_sure">"Are you sure?"</string>
+    <string name="yes_delete_demo">"Yes, delete demo"</string>
+    <string name="no">"No"</string>
 
     <string-array name="instruments">
         <item>piano</item>

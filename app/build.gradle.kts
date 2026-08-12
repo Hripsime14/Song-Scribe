@@ -50,9 +50,12 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
 
+    implementation(libs.koin.android)
+
     implementation(project(":core:presentation:designsystem"))
     implementation(project(":core:presentation:ui"))
     implementation(project(":demos:presentation"))
+    implementation(project(":demos:data"))
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)

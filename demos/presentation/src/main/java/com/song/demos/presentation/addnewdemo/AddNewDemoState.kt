@@ -10,17 +10,7 @@ import com.song.core.presentation.designsystem.theme.LabelSkyBlue
 import com.song.core.presentation.designsystem.theme.LabelYellow
 import com.song.demos.presentation.demos.model.ColorModel
 import com.song.demos.presentation.demos.model.TagModel
-
-data class AddNewDemoState(
-    val sections: List<NewDemoSections> = NewDemoSections.default,
-    val colorOptions: List<ColorModel> = defaultColorOptions,
-    val tagOptions: List<TagModel> = emptyList(),
-    val isRecording: Boolean = false,
-    val titleTextState: TextFieldState = TextFieldState(),
-    val lyricsTextState: TextFieldState = TextFieldState(),
-    val newTagTextState: TextFieldState = TextFieldState(),
-    val showAddTagSection: Boolean = false
-)
+import java.util.Collections.emptyList
 
 private val defaultColorOptions = listOf(
     ColorModel(LabelLavender),
@@ -30,4 +20,18 @@ private val defaultColorOptions = listOf(
     ColorModel(LabelSkyBlue),
     ColorModel(LabelPink),
     ColorModel(LabelLightGreen)
+)
+
+data class AddNewDemoState(
+    val sections: List<NewDemoSections> = NewDemoSections.default,
+    val colorOptions: List<ColorModel> = defaultColorOptions,
+    val tagOptions: List<TagModel> = emptyList(),
+    val isRecording: Boolean = false,
+    val recordingSeconds: Int = 0,
+    val recordingFilePath: String? = null,
+    val titleTextState: TextFieldState = TextFieldState(),
+    val lyricsTextState: TextFieldState = TextFieldState(),
+    val newTagTextState: TextFieldState = TextFieldState(),
+    val showAddTagSection: Boolean = false,
+    val isSaving: Boolean = false
 )

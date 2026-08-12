@@ -14,6 +14,7 @@ object DemoDatabaseFactory {
                 DemoDatabase::class.java,
                 DATABASE_NAME
             )
+            .fallbackToDestructiveMigration(dropAllTables = true)
             .build()
     }
 }

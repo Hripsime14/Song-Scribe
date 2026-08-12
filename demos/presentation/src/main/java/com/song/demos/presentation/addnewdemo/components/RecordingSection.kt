@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,20 +19,26 @@ import com.song.core.presentation.designsystem.theme.SongScribeTheme
 fun RecordingSection(
     modifier: Modifier = Modifier,
     isRecording: Boolean = false,
+    hasRecording: Boolean = false,
+    recordingSeconds: Int = 0,
     onToggleRecording: () -> Unit = {},
+    onDiscardRecording: () -> Unit = {},
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .addDefaultTopPadding()
             .clip(RoundedCornerShape(32.dp))
-            .height(300.dp)
+            .height(220.dp)
             .background(MaterialTheme.colorScheme.surfaceContainer),
         contentAlignment = Alignment.Center
     ) {
         RecordingView(
             isRecording = isRecording,
-            onToggleRecording = onToggleRecording
+            hasRecording = hasRecording,
+            recordingSeconds = recordingSeconds,
+            onToggleRecording = onToggleRecording,
+            onDiscardRecording = onDiscardRecording
         )
     }
 }

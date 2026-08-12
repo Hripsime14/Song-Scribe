@@ -10,5 +10,6 @@ data class DemoEntity(
     val title: String,
     val createdAtMillis: Long,
     val colorLabel: Long,
-    val genres: List<String>
+    val genres: List<String>,
+    val lyrics: String = ""
 )

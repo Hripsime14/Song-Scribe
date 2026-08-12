@@ -17,10 +17,11 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,11 +46,12 @@ import com.song.demos.presentation.demos.model.RecordingUi
 @Composable
 fun DemoListItem(
     modifier: Modifier = Modifier,
-    demoUi: DemoUi
+    demoUi: DemoUi,
+    onDeleteClick: () -> Unit = {}
 ) {
     val primaryRecording = remember(demoUi.recordings) {
-        demoUi.recordings.first { it.isPrimary }
-    }
+        demoUi.recordings.firstOrNull { it.isPrimary } ?: demoUi.recordings.firstOrNull()
+    } ?: return
     val playbackProgress = if (primaryRecording.duration > 0) {
         primaryRecording.currentDuration.toFloat() / primaryRecording.duration.toFloat()
     } else {
@@ -115,21 +117,27 @@ fun DemoListItem(
                             style = MaterialTheme.typography.titleSmall,
                             color = MaterialTheme.colorScheme.secondary,
                         )
-                        SongScribeBeige(
-                            text = "+${demoUi.moreRecordingCount} more",
-                            modifier = Modifier
-                                .addDefaultStartPadding(),
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            textColor = MaterialTheme.colorScheme.onPrimary,
-                        )
+                        if (demoUi.moreRecordingCount > 0) {
+                            SongScribeBeige(
+                                text = "+${demoUi.moreRecordingCount} more",
+                                modifier = Modifier
+                                    .addDefaultStartPadding(),
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                textColor = MaterialTheme.colorScheme.onPrimary,
+                            )
+                        }
                     }
                 }
-                Icon(
+                IconButton(
                     modifier = Modifier.align(Alignment.CenterVertically),
-                    imageVector = Icons.Default.MoreVert,
-                    contentDescription = "Note",
-                    tint = MaterialTheme.colorScheme.secondary
-                )
+                    onClick = onDeleteClick
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = "Delete",
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
+                }
             }
             PrimaryDemoView(
                 modifier = Modifier
@@ -193,7 +201,7 @@ fun DemoListItem(
                    SongScribeBeige(
                        text = it,
                        modifier = Modifier.addDefaultTopPadding(),
-                       containerColor = MaterialTheme.colorScheme.outlineVariant,
+                       containerColor = MaterialTheme.colorScheme.surfaceVariant,
                        textColor = MaterialTheme.colorScheme.onSurfaceVariant,
                    )
                }

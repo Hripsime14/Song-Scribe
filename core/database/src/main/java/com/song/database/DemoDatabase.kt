@@ -13,7 +13,7 @@ import com.song.database.entity.RecordingEntity
         DemoEntity::class,
         RecordingEntity::class
     ],
-    version = 1
+    version = 2
 )
 @TypeConverters(StringListConverter::class)
 abstract class DemoDatabase : RoomDatabase() {

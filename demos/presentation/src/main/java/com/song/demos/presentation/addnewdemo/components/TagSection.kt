@@ -96,7 +96,7 @@ fun TagSection(
                 modifier = Modifier
                     .padding(vertical = 8.dp, horizontal = 16.dp)
                     .fillMaxWidth()
-                    .height(48.dp),
+                    .height(52.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
@@ -123,7 +123,7 @@ fun TagSection(
                     text = stringResource(R.string.add),
                     containerColor = MaterialTheme.colorScheme.primary,
                     textColor = MaterialTheme.colorScheme.onPrimary,
-                    onClick = {},
+                    onClick = onAddCustomTag,
                     cornerShape = 8.dp
                 )
             }
