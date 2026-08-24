@@ -6,5 +6,6 @@ data class RecordingUi(
     val duration: Int,
     val currentDuration: Int,
     val isPrimary: Boolean,
-    val recording: String
+    val recording: String,
+    val isPlaying: Boolean
 )

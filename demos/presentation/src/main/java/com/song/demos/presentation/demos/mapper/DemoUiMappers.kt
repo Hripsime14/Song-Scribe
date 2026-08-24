@@ -20,7 +20,7 @@ fun Demo.toDemoModel(): DemoUi = DemoUi(
         .atZone(ZoneId.systemDefault())
         .format(dateFormatter),
     colorLabel = Color(colorLabel.toInt()),
-    recordings = recordings.map { it.toRecordingItem() },
+    recording = recordings.firstOrNull { it.isPrimary }?.toRecordingItem(),
     genres = genres,
     moreRecordingCount = (recordings.size - 1).coerceAtLeast(0)
 )
@@ -31,7 +31,8 @@ fun Recording.toRecordingItem(): RecordingUi = RecordingUi(
     duration = (durationMillis / 1000).toInt(),
     currentDuration = 0,
     isPrimary = isPrimary,
-    recording = filePath
+    recording = filePath,
+    isPlaying = false
 )
 
 fun List<String>.toTagModels(): List<TagModel> = map ( String::toTagModel )

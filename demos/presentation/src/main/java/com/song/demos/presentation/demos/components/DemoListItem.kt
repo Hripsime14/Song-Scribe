@@ -47,11 +47,10 @@ import com.song.demos.presentation.demos.model.RecordingUi
 fun DemoListItem(
     modifier: Modifier = Modifier,
     demoUi: DemoUi,
+    onPlayPauseClick: () -> Unit = {},
     onDeleteClick: () -> Unit = {}
 ) {
-    val primaryRecording = remember(demoUi.recordings) {
-        demoUi.recordings.firstOrNull { it.isPrimary } ?: demoUi.recordings.firstOrNull()
-    } ?: return
+    val primaryRecording = demoUi.recording ?: return
     val playbackProgress = if (primaryRecording.duration > 0) {
         primaryRecording.currentDuration.toFloat() / primaryRecording.duration.toFloat()
     } else {
@@ -80,7 +79,7 @@ fun DemoListItem(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(22.dp)
         ) {
             Row(
                 modifier = Modifier
@@ -156,7 +155,7 @@ fun DemoListItem(
             ) {
                 SongScribeButton(
                     icon = Icons.Default.PlayArrow,
-                    onClick = {}
+                    onClick = onPlayPauseClick
                 )
                 Text(
                     modifier = Modifier
@@ -215,33 +214,33 @@ fun DemoListItem(
 @Composable
 private fun DemoListItemPreview() {
     SongScribeTheme {
-        DemoListItem(
-            demoUi = DemoUi(
-                id = "1",
-                title = "Yellow Stone",
-                date = "21/07/2022",
-                colorLabel = MaterialTheme.colorScheme.tertiaryFixed,
-                recordings = listOf(
-                    RecordingUi(
-                        id = "1",
-                        title = "First Take",
-                        duration = 33,
-                        isPrimary = true,
-                        recording = "",
-                        currentDuration = 15,
-                    ),
-                    RecordingUi(
-                        id = "2",
-                        title = "Second Take",
-                        duration = 40,
-                        isPrimary = false,
-                        recording = "",
-                        currentDuration = 15,
-                    )
-                ),
-                genres = listOf("piano", "guitar", "drums", "piano", "guitar", "drums", "piano", "guitar", "drums"),
-                moreRecordingCount = 2
-            )
-        )
+//        DemoListItem(
+//            demoUi = DemoUi(
+//                id = "1",
+//                title = "Yellow Stone",
+//                date = "21/07/2022",
+//                colorLabel = MaterialTheme.colorScheme.tertiaryFixed,
+//                recordings = listOf(
+//                    RecordingUi(
+//                        id = "1",
+//                        title = "First Take",
+//                        duration = 33,
+//                        isPrimary = true,
+//                        recording = "",
+//                        currentDuration = 15,
+//                    ),
+//                    RecordingUi(
+//                        id = "2",
+//                        title = "Second Take",
+//                        duration = 40,
+//                        isPrimary = false,
+//                        recording = "",
+//                        currentDuration = 15,
+//                    )
+//                ),
+//                genres = listOf("piano", "guitar", "drums", "piano", "guitar", "drums", "piano", "guitar", "drums"),
+//                moreRecordingCount = 2
+//            )
+//        )
     }
 }

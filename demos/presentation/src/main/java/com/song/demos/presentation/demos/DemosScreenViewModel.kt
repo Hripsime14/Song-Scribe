@@ -89,7 +89,22 @@ class DemosScreenViewModel(
                 }
             }
 
-            is DemosScreenAction.onTogglePlayClick -> TODO()
+            is DemosScreenAction.onTogglePlayClick -> {
+                _state.update { state ->
+                    state.copy(
+                        demos = state.demos.map { demo ->
+                            val recording = demo.recording ?: return@map demo
+                            if (demo.id == action.demoId) {
+                                demo.copy(recording = recording.copy(isPlaying = !recording.isPlaying))
+                            } else if (recording.isPlaying) {
+                                demo.copy(recording = recording.copy(isPlaying = false))
+                            } else {
+                                demo
+                            }
+                        }
+                    )
+                }
+            }
         }
     }
 

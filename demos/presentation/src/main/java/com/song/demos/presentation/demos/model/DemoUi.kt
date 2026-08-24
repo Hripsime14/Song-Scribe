@@ -7,7 +7,7 @@ data class DemoUi(
     val title: String,
     val date: String,
     val colorLabel: Color,
-    val recordings: List<RecordingUi>,
+    val recording: RecordingUi?,
     val genres: List<String>,
     val moreRecordingCount: Int,
 )

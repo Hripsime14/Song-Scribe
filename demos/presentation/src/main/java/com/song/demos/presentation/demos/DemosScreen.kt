@@ -228,7 +228,7 @@ private fun DemoScreenPreview() {
                         title = "Yellow Stone",
                         date = "21/07/2022",
                         colorLabel = MaterialTheme.colorScheme.tertiaryFixed,
-                        recordings = listOf(
+                        recording =
                             RecordingUi(
                                 id = "1",
                                 title = "First Take",
@@ -236,8 +236,9 @@ private fun DemoScreenPreview() {
                                 isPrimary = true,
                                 recording = "",
                                 currentDuration = 15,
+                                isPlaying = true
                             )
-                        ),
+                        ,
                         genres = listOf("piano", "guitar", "drums"),
                         moreRecordingCount = 0
                     )
