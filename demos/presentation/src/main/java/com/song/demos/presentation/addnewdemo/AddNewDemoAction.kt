@@ -8,7 +8,9 @@ sealed interface AddNewDemoAction {
     data class OnColorSelect(val color: ColorModel) : AddNewDemoAction
     data class OnTagClick(val tag: TagModel) : AddNewDemoAction
     data object OnToggleRecording : AddNewDemoAction
-    data object OnDiscardRecording : AddNewDemoAction
+    data class OnDeleteRecording(val recordingId: String) : AddNewDemoAction
+    data class OnTogglePlayback(val recordingId: String) : AddNewDemoAction
+    data class OnSetPrimaryRecording(val recordingId: String) : AddNewDemoAction
 
     data object OnCustomTagClick : AddNewDemoAction
     data object OnAddCustomTagClick : AddNewDemoAction

@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +22,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -108,7 +111,7 @@ fun AddNewDemoScreen(
                 onCloseClick = onCloseClick,
                 endButton = {
                     val canCreate = state.titleTextState.text.isNotBlank() &&
-                            state.recordingFilePath != null &&
+                            state.recordings.isNotEmpty() &&
                             !state.isSaving
                     TextButton(
                         onClick = { onAction(AddNewDemoAction.OnCreateDemoClick) },
@@ -123,11 +126,21 @@ fun AddNewDemoScreen(
             )
         }
     ) { padding ->
+        val focusManager = LocalFocusManager.current
+        val keyboardController = LocalSoftwareKeyboardController.current
         Column(
             modifier = Modifier
                 .padding(padding)
                 .padding(horizontal = 16.dp)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(rememberScrollState())
+                .clickable(
+                    interactionSource = null,
+                    indication = null,
+                    onClick = {
+                        focusManager.clearFocus()
+                        keyboardController?.hide()
+                    }
+                ),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -135,13 +148,19 @@ fun AddNewDemoScreen(
                 when (section) {
                     NewDemoSections.Recording -> RecordingSection(
                         isRecording = state.isRecording,
-                        hasRecording = !state.isRecording && state.recordingFilePath != null,
                         recordingSeconds = state.recordingSeconds,
+                        recordings = state.recordings,
                         onToggleRecording = {
                             onAction(AddNewDemoAction.OnToggleRecording)
                         },
-                        onDiscardRecording = {
-                            onAction(AddNewDemoAction.OnDiscardRecording)
+                        onPlayPauseRecording = { recordingId ->
+                            onAction(AddNewDemoAction.OnTogglePlayback(recordingId))
+                        },
+                        onSetPrimaryRecording = { recordingId ->
+                            onAction(AddNewDemoAction.OnSetPrimaryRecording(recordingId))
+                        },
+                        onDeleteRecording = { recordingId ->
+                            onAction(AddNewDemoAction.OnDeleteRecording(recordingId))
                         }
                     )
 

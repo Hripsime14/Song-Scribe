@@ -8,6 +8,7 @@ import com.song.core.presentation.designsystem.theme.LabelRose
 import com.song.core.presentation.designsystem.theme.LabelSageGreen
 import com.song.core.presentation.designsystem.theme.LabelSkyBlue
 import com.song.core.presentation.designsystem.theme.LabelYellow
+import com.song.demos.presentation.addnewdemo.model.RecordingItemUi
 import com.song.demos.presentation.demos.model.ColorModel
 import com.song.demos.presentation.demos.model.TagModel
 import java.util.Collections.emptyList
@@ -29,6 +30,7 @@ data class AddNewDemoState(
     val isRecording: Boolean = false,
     val recordingSeconds: Int = 0,
     val recordingFilePath: String? = null,
+    val recordings: List<RecordingItemUi> = emptyList(),
     val titleTextState: TextFieldState = TextFieldState(),
     val lyricsTextState: TextFieldState = TextFieldState(),
     val newTagTextState: TextFieldState = TextFieldState(),

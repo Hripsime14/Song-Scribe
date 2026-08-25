@@ -130,7 +130,7 @@ fun DemosScreen(
                                 onClick = { onAction(DemosScreenAction.onAcceptDeleteDialog) }
                             ) {
                                 Text(
-                                    text = stringResource(R.string.yes_delete_demo),
+                                    text = stringResource(R.string.yes),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onPrimary
                                 )
@@ -202,6 +202,9 @@ fun DemosScreen(
                             DemoListItem(
                                 modifier = Modifier.fillMaxWidth(),
                                 demoUi = demo,
+                                onPlayPauseClick = {
+                                    onAction(DemosScreenAction.onTogglePlayClick(demo.id, demo.recording?.isPlaying == true))
+                                },
                                 onDeleteClick = {
                                     onAction(DemosScreenAction.onDeleteRequest(demo.id))
                                 },

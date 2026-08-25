@@ -1,6 +1,8 @@
 package com.song.demos.presentation.demos.components
 
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,13 +21,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,14 +55,26 @@ fun DemoListItem(
 ) {
     val primaryRecording = demoUi.recording ?: return
     val playbackProgress = if (primaryRecording.duration > 0) {
-        primaryRecording.currentDuration.toFloat() / primaryRecording.duration.toFloat()
+        (primaryRecording.currentDuration.toFloat() / primaryRecording.duration.toFloat()).coerceIn(0f, 1f)
     } else {
         0f
     }
-    val animatedProgress by animateFloatAsState(
-        targetValue = playbackProgress.coerceIn(0f, 1f),
-        label = "playbackProgress"
-    )
+    val animatedProgress = remember { Animatable(playbackProgress) }
+
+    LaunchedEffect(primaryRecording.isPlaying, primaryRecording.id) {
+        if (primaryRecording.isPlaying && primaryRecording.duration > 0) {
+            val remainingSeconds = primaryRecording.duration - primaryRecording.currentDuration
+            animatedProgress.animateTo(
+                targetValue = 1f,
+                animationSpec = tween(
+                    durationMillis = (remainingSeconds * 1000).coerceAtLeast(1),
+                    easing = LinearEasing
+                )
+            )
+        } else {
+            animatedProgress.snapTo(playbackProgress)
+        }
+    }
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -154,7 +169,7 @@ fun DemoListItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 SongScribeButton(
-                    icon = Icons.Default.PlayArrow,
+                    icon = if (primaryRecording.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
                     onClick = onPlayPauseClick
                 )
                 Text(
@@ -174,7 +189,7 @@ fun DemoListItem(
                 ) {
                     Box(
                         modifier = Modifier
-                            .fillMaxWidth(animatedProgress)
+                            .fillMaxWidth(animatedProgress.value)
                             .fillMaxHeight()
                             .clip(RoundedCornerShape(8.dp))
                             .background(color = MaterialTheme.colorScheme.primary)
