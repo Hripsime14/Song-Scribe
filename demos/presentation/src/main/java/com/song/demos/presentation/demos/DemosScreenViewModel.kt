@@ -74,7 +74,7 @@ class DemosScreenViewModel(
 
             is DemosScreenAction.onItemClick -> {
                 viewModelScope.launch {
-                    eventChannel.send(DemosScreenEvent.OpenDemoDetailEvent)
+                    eventChannel.send(DemosScreenEvent.OpenDemoDetailEvent(action.demoId))
                 }
             }
 

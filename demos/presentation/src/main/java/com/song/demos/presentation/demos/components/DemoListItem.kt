@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,7 +52,8 @@ fun DemoListItem(
     modifier: Modifier = Modifier,
     demoUi: DemoUi,
     onPlayPauseClick: () -> Unit = {},
-    onDeleteClick: () -> Unit = {}
+    onDeleteClick: () -> Unit = {},
+    onItemClick: () -> Unit = {}
 ) {
     val primaryRecording = demoUi.recording ?: return
     val playbackProgress = if (primaryRecording.duration > 0) {
@@ -84,6 +86,7 @@ fun DemoListItem(
             )
             .clip(RoundedCornerShape(32.dp))
             .background(Color.White)
+            .clickable(enabled = true, onClick = onItemClick)
     ) {
         Box(modifier = Modifier
             .background(color = demoUi.colorLabel)

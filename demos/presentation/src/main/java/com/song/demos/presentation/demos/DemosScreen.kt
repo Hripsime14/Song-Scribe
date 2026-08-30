@@ -48,14 +48,17 @@ import org.koin.androidx.compose.koinViewModel
 fun DemosScreenRoot(
     modifier: Modifier = Modifier,
     viewModel: DemosScreenViewModel = koinViewModel(),
-    onNavigateToAddNewDemo: () -> Unit
+    onNavigateToAddNewDemo: () -> Unit,
+    onNavigateToDemoDetails: (String) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     ObserveAsEvents(flow = viewModel.events) { event ->
         when (event) {
             DemosScreenEvent.AddDemoEvent -> onNavigateToAddNewDemo()
-            DemosScreenEvent.OpenDemoDetailEvent -> Unit
+            is DemosScreenEvent.OpenDemoDetailEvent -> {
+                onNavigateToDemoDetails(event.demoId)
+            }
             DemosScreenEvent.OpenDeleteEvent -> Unit
         }
     }
@@ -208,6 +211,9 @@ fun DemosScreen(
                                 onDeleteClick = {
                                     onAction(DemosScreenAction.onDeleteRequest(demo.id))
                                 },
+                                onItemClick = {
+                                    onAction(DemosScreenAction.onItemClick(demoId = demo.id))
+                                }
                             )
                         }
                     }

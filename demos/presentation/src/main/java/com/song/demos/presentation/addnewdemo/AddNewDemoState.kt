@@ -13,7 +13,7 @@ import com.song.demos.presentation.demos.model.ColorModel
 import com.song.demos.presentation.demos.model.TagModel
 import java.util.Collections.emptyList
 
-private val defaultColorOptions = listOf(
+val defaultColorOptions = listOf(
     ColorModel(LabelLavender),
     ColorModel(LabelRose),
     ColorModel(LabelSageGreen),

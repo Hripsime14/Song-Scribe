@@ -2,8 +2,10 @@ package com.song.demos.data.di
 
 import com.song.database.DemoDatabase
 import com.song.database.DemoDatabaseFactory
+import com.song.demos.data.repo.DemoDetailsRepoImpl
 import com.song.demos.data.repo.DemosRepoImpl
 import com.song.demos.data.repo.NewDemoRepoImpl
+import com.song.demos.domain.repo.DemoDetailsRepo
 import com.song.demos.domain.repo.DemosRepo
 import com.song.demos.domain.repo.NewDemoRepo
 import org.koin.android.ext.koin.androidContext
@@ -17,4 +19,5 @@ val demosDataModule = module {
 
     singleOf(::DemosRepoImpl) { bind<DemosRepo>() }
     singleOf(::NewDemoRepoImpl) { bind<NewDemoRepo>() }
+    singleOf(::DemoDetailsRepoImpl) { bind<DemoDetailsRepo>() }
 }

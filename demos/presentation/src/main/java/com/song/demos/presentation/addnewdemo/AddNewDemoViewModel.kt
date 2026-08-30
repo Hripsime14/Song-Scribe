@@ -46,7 +46,7 @@ class AddNewDemoViewModel(
     private var progressJob: Job? = null
     private var playingRecordingId: String? = null
 
-        fun onAction(action: AddNewDemoAction) {
+    fun onAction(action: AddNewDemoAction) {
         when (action) {
             is AddNewDemoAction.OnTagOptionsLoaded -> _state.update { state ->
                 state.copy(tagOptions = action.tags.toTagModels())
