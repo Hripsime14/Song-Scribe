@@ -36,7 +36,7 @@ import com.song.core.presentation.ui.util.ObserveAsEvents
 import com.song.demos.presentation.R
 import com.song.demos.presentation.addnewdemo.components.ColorLabelSection
 import com.song.demos.presentation.addnewdemo.components.DemoTitleSection
-import com.song.demos.presentation.addnewdemo.components.InfoSection
+import com.song.demos.presentation.addnewdemo.components.GuidanceSection
 import com.song.demos.presentation.addnewdemo.components.LyricsSection
 import com.song.demos.presentation.addnewdemo.components.RecordingSection
 import com.song.demos.presentation.addnewdemo.components.TagSection
@@ -194,7 +194,7 @@ fun AddNewDemoScreen(
                         lyricsState = state.lyricsTextState
                     )
 
-                    NewDemoSections.Info -> InfoSection()
+                    NewDemoSections.Info -> GuidanceSection()
                 }
             }
         }

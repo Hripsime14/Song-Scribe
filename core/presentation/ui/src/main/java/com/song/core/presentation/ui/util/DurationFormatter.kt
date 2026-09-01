@@ -1,5 +1,8 @@
 package com.song.core.presentation.ui.util
 
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 fun Int.formatAsDuration(): String {
@@ -12,4 +15,15 @@ fun Int.formatAsDuration(): String {
     } else {
         String.format(Locale.US, "%d:%02d", minutes, seconds)
     }
+}
+
+
+fun Long.formatDate(): String {
+    val formatter = DateTimeFormatter.ofPattern("dd MMMM, yyyy", Locale.getDefault())
+
+    return Instant
+        .ofEpochMilli(this)
+        .atZone(ZoneId.systemDefault())
+        .toLocalDate()
+        .format(formatter)
 }

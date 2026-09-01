@@ -27,6 +27,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.song.core.presentation.designsystem.components.SongScribePositiveButton
 import com.song.core.presentation.designsystem.components.SongScribeToolbar
 import com.song.core.presentation.designsystem.theme.SongScribeTheme
+import com.song.core.presentation.ui.util.countWords
+import com.song.core.presentation.ui.util.formatDate
 import com.song.demos.presentation.R
 import com.song.demos.presentation.addnewdemo.components.DemoTitleSection
 import com.song.demos.presentation.addnewdemo.components.InfoSection
@@ -146,7 +148,10 @@ fun DemoDetailsScreen(
                             onDeleteRecording = { id -> onAction(DemoDetailsAction.OnDeleteRecording(id)) }
                         )
                     }
-                    DemoDetailsSections.Info -> InfoSection()
+                    DemoDetailsSections.Info -> InfoSection(
+                        createdTime = state.createdAtMillis.formatDate(),
+                        wordsCount = countWords(state.lyricsTextState.text.toString())
+                    )
                     DemoDetailsSections.Lyrics -> LyricsSection(
                         lyricsState = state.lyricsTextState
                     )

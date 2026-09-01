@@ -34,6 +34,11 @@
     <string name="new_recording_label_hint">Label (e.g. Take 2…)</string>
     <string name="close">Close</string>
 
+    <plurals name="word_count">
+        <item quantity="one">%d word</item>
+        <item quantity="other">%d words</item>
+    </plurals>
+
     <string-array name="instruments">
         <item>piano</item>
         <item>guitar</item>
