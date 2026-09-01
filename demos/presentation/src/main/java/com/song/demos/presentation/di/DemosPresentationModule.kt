@@ -12,8 +12,7 @@ import org.koin.dsl.module
 
 val demosPresentationModule = module {
     viewModel { AddNewDemoViewModel(androidApplication(), get(), get())}
-    viewModel { DemoDetailsViewModel(get())}
+    viewModel { DemoDetailsViewModel(androidApplication(), get(), get())}
     singleOf(::DemoPlayer)
     viewModelOf(::DemosScreenViewModel)
-    viewModelOf(::DemoDetailsViewModel)
 }

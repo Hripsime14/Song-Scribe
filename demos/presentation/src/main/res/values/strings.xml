@@ -29,6 +29,10 @@
     <string name="no">"No"</string>
     <string name="demo_details">"Demo Details"</string>
     <string name="save">"Save"</string>
+    <string name="new_recording">"NEW RECORDING"</string>
+    <string name="recordings_section">RECORDINGS</string>
+    <string name="new_recording_label_hint">Label (e.g. Take 2…)</string>
+    <string name="close">Close</string>
 
     <string-array name="instruments">
         <item>piano</item>

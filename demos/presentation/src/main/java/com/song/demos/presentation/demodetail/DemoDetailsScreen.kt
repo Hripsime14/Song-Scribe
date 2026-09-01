@@ -4,14 +4,15 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,10 +24,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.song.core.presentation.designsystem.components.SongScribePositiveButton
 import com.song.core.presentation.designsystem.components.SongScribeToolbar
 import com.song.core.presentation.designsystem.theme.SongScribeTheme
 import com.song.demos.presentation.R
-import com.song.demos.presentation.addnewdemo.AddNewDemoAction
 import com.song.demos.presentation.addnewdemo.components.DemoTitleSection
 import com.song.demos.presentation.addnewdemo.components.InfoSection
 import com.song.demos.presentation.addnewdemo.components.LyricsSection
@@ -37,6 +38,7 @@ import org.koin.androidx.compose.koinViewModel
 fun DemoDetailsScreenRoot(
     demoId: String,
     onSaveChanges: () -> Unit,
+    onBackClick: () -> Unit,
     viewModel: DemoDetailsViewModel = koinViewModel()
 ) {
 
@@ -59,7 +61,7 @@ fun DemoDetailsScreenRoot(
     DemoDetailsScreen(
         state = state,
         onAction = { action ->
-            val needsPermission = action == AddNewDemoAction.OnToggleRecording &&
+            val needsPermission = action == DemoDetailsAction.OnToggleRecording &&
                     !state.isRecording &&
                     ContextCompat.checkSelfPermission(
                         context,
@@ -72,7 +74,8 @@ fun DemoDetailsScreenRoot(
                 viewModel.onAction(action)
             }
         },
-        onSaveClick = onSaveChanges
+        onSaveClick = onSaveChanges,
+        onBackClick = onBackClick
     )
 }
 
@@ -81,7 +84,8 @@ fun DemoDetailsScreen(
     state: DemoDetailsState,
     modifier: Modifier = Modifier,
     onAction: (DemoDetailsAction) -> Unit = {},
-    onSaveClick: () -> Unit
+    onSaveClick: () -> Unit,
+    onBackClick: () -> Unit
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -89,21 +93,22 @@ fun DemoDetailsScreen(
             SongScribeToolbar(
                 title = stringResource(R.string.demo_details),
                 showBackButton = true,
-                onCloseClick = onSaveClick,
-                onBackClick = {},
+                onBackClick = onBackClick,
                 endButton = {
                     val canCreate = state.titleTextState.text.isNotBlank() &&
                             state.recordings.isNotEmpty() &&
                             !state.isSaving
-                    TextButton(
-                        onClick = { onAction(DemoDetailsAction.OnSaveDemoClick) },
-                        enabled = canCreate
-                    ) {
-                        Text(
-                            text = stringResource(R.string.save),
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                    }
+                    SongScribePositiveButton(
+                        onClick = {
+                            onAction(DemoDetailsAction.OnSaveDemoClick)
+                            onSaveClick()
+                        },
+                        enabled = canCreate,
+                        text = stringResource(R.string.save),
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        textColor = MaterialTheme.colorScheme.onPrimary,
+                        icon = Icons.Default.Save
+                    )
                 }
             )
         }
@@ -112,8 +117,12 @@ fun DemoDetailsScreen(
         LazyColumn (
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            contentPadding = padding
+                .padding(top = padding.calculateTopPadding()),
+            contentPadding = PaddingValues(
+                start = 16.dp,
+                end = 16.dp,
+                bottom = padding.calculateBottomPadding()
+            )
         ) {
             items(state.sections, {it.toString()}) {
                 when(it) {
@@ -122,7 +131,20 @@ fun DemoDetailsScreen(
                         titleState = state.titleTextState
                     )
                     DemoDetailsSections.Recordings -> {
-                        DetailRecordingsList(recordings = state.recordings)
+                        DetailRecordingsList(
+                            recordings = state.recordings,
+                            isAddingRecording = state.isAddingRecording,
+                            isRecording = state.isRecording,
+                            recordingSeconds = state.recordingSeconds,
+                            newRecordingLabelState = state.newRecordingLabelState,
+                            onNewRecordingClick = { onAction(DemoDetailsAction.OnNewRecordingClick) },
+                            onCloseNewRecordingClick = { onAction(DemoDetailsAction.OnCloseNewRecordingSection) },
+                            onToggleRecording = { onAction(DemoDetailsAction.OnToggleRecording) },
+                            onAddNewRecordingClick = { onAction(DemoDetailsAction.OnAddNewRecordingClick) },
+                            onPlayPauseRecording = { id -> onAction(DemoDetailsAction.OnTogglePlayback(id)) },
+                            onSetPrimaryRecording = { id -> onAction(DemoDetailsAction.OnSetPrimaryRecording(id)) },
+                            onDeleteRecording = { id -> onAction(DemoDetailsAction.OnDeleteRecording(id)) }
+                        )
                     }
                     DemoDetailsSections.Info -> InfoSection()
                     DemoDetailsSections.Lyrics -> LyricsSection(
@@ -143,7 +165,8 @@ private fun DemoDetailsScreenPreview() {
             state = DemoDetailsState(),
             modifier = TODO(),
             onAction = TODO(),
-            onSaveClick = TODO()
+            onSaveClick = TODO(),
+            onBackClick = {}
         )
     }
 }

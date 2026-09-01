@@ -15,7 +15,7 @@ sealed interface DemoDetailsAction {
     data class OnTogglePlayback(val recordingId: String): DemoDetailsAction
     data class OnSetPrimaryRecording(val recordingId: String): DemoDetailsAction
     data class OnDeleteRecording(val recordingId: String) : DemoDetailsAction
-    data class OnAddNewRecording(val recordingId: String) : DemoDetailsAction
+    data object OnAddNewRecordingClick: DemoDetailsAction
     data object OnCloseNewRecordingSection: DemoDetailsAction
     data object OnSaveDemoClick: DemoDetailsAction
     data object OnToggleRecording: DemoDetailsAction

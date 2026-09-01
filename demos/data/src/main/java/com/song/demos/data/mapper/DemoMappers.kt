@@ -16,6 +16,11 @@ fun DemoWithRecordings.toDemo(): Demo = Demo(
     recordings = recordings.map { it.toRecording() }
 )
 
+fun Demo.toDemoWithRecordings(): DemoWithRecordings = DemoWithRecordings(
+    demo = toDemoEntity(),
+    recordings = toRecordingEntities()
+)
+
 fun RecordingEntity.toRecording(): Recording = Recording(
     id = id,
     title = title,

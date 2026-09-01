@@ -33,7 +33,8 @@ fun SongScribePositiveButton(
     textColor: Color,
     hasBorder: Boolean = false,
     cornerShape: Dp = 32.dp,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    enabled: Boolean = true
 ) {
     Row(
         modifier = modifier
@@ -43,7 +44,7 @@ fun SongScribePositiveButton(
                 color = if (hasBorder) MaterialTheme.colorScheme.outline else Color.Transparent,
                 shape = RoundedCornerShape(cornerShape)
             )
-            .background(containerColor)
+            .background(if (enabled) containerColor else containerColor.copy(alpha = 0.3f))
             .clickable(onClick = onClick, interactionSource = null, indication = null)
             .padding(horizontal = 8.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,

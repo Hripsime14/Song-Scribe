@@ -60,6 +60,9 @@ private fun NavGraphBuilder.demosGraph(
                 demoId = demoId,
                 onSaveChanges = {
                     navController.navigateUp()
+                },
+                onBackClick = {
+                    navController.navigateUp()
                 }
             )
         }
