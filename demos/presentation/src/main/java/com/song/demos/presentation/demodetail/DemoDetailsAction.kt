@@ -19,4 +19,5 @@ sealed interface DemoDetailsAction {
     data object OnCloseNewRecordingSection: DemoDetailsAction
     data object OnSaveDemoClick: DemoDetailsAction
     data object OnToggleRecording: DemoDetailsAction
+    data class OnTagOptionsLoaded(val tags: List<String>): DemoDetailsAction
 }

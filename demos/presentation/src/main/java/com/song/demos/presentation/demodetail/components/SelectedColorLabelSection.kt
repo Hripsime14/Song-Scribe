@@ -1,11 +1,10 @@
-package com.song.demos.presentation.addnewdemo.components
+package com.song.demos.presentation.demodetail.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
@@ -33,21 +33,22 @@ import com.song.demos.presentation.R
 import com.song.demos.presentation.demos.model.ColorModel
 
 @Composable
-fun ColorLabelSection(
+fun SelectedColorLabelSection(
     modifier: Modifier = Modifier,
     colors: List<ColorModel>,
     onColorSelect: (ColorModel) -> Unit = {}
 ) {
-    Column (
+    Row (
         modifier = modifier
             .fillMaxWidth()
             .addDefaultTopPadding()
             .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .background(MaterialTheme.colorScheme.surfaceContainer),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                .padding(start = 16.dp, end = 16.dp),
             text = stringResource(R.string.color_label),
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.primary,
@@ -63,6 +64,7 @@ fun ColorLabelSection(
                     SongScribeColorLabel(
                         modifier = Modifier.clickable { onColorSelect(color) },
                         color = color.color,
+                        size = 24.dp,
                         isSelected = color.isSelected,
                     )
                 }
@@ -74,12 +76,12 @@ fun ColorLabelSection(
 
 @Preview(showBackground = true)
 @Composable
-private fun ColorLabelSectionPreview() {
+private fun SelectedColorLabelSectionPreview() {
     SongScribeTheme {
-        ColorLabelSection(
+        SelectedColorLabelSection(
             modifier = Modifier,
             colors = listOf(
-                ColorModel(LabelLavender, isSelected = true),
+                ColorModel(LabelLavender),
                 ColorModel(LabelRose),
                 ColorModel(LabelSageGreen),
                 ColorModel(LabelYellow),

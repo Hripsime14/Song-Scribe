@@ -33,7 +33,9 @@ import com.song.demos.presentation.R
 import com.song.demos.presentation.addnewdemo.components.DemoTitleSection
 import com.song.demos.presentation.addnewdemo.components.InfoSection
 import com.song.demos.presentation.addnewdemo.components.LyricsSection
+import com.song.demos.presentation.demodetail.components.SelectedTagsSection
 import com.song.demos.presentation.demodetail.components.DetailRecordingsList
+import com.song.demos.presentation.demodetail.components.SelectedColorLabelSection
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -50,6 +52,8 @@ fun DemoDetailsScreenRoot(
 
     LaunchedEffect(demoId) {
         viewModel.getDemoDetails(demoId)
+        viewModel.onAction(DemoDetailsAction.OnTagOptionsLoaded(tagOptions))
+
     }
 
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -128,7 +132,27 @@ fun DemoDetailsScreen(
         ) {
             items(state.sections, {it.toString()}) {
                 when(it) {
-                    DemoDetailsSections.DateAndGenre -> {}
+                    DemoDetailsSections.ColorLabel -> {
+                        SelectedColorLabelSection(
+                            colors = state.colorOptions,
+                            onColorSelect = { color ->
+                                onAction(DemoDetailsAction.OnColorSelect(color))
+                            }
+                        )
+                    }
+                    DemoDetailsSections.Tags -> {
+                        SelectedTagsSection(
+                            selectedTags = state.tagOptions.filter { it.isSelected },
+                            tagOptions = state.tagOptions,
+                            showTagSection = state.showTagSection,
+                            showAddTagSection = state.showAddTagSection,
+                            newTagState = state.newTagTextState,
+                            onEditClick = { onAction(DemoDetailsAction.OnTagIconClick) },
+                            onTagClick = { tag -> onAction(DemoDetailsAction.OnTagClick(tag)) },
+                            onCustomTagClick = { onAction(DemoDetailsAction.OnCustomTagClick) },
+                            onAddCustomTag = { onAction(DemoDetailsAction.OnAddCustomTagClick) }
+                        )
+                    }
                     DemoDetailsSections.DemoTitle -> DemoTitleSection(
                         titleState = state.titleTextState
                     )

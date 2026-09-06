@@ -64,10 +64,10 @@ fun DetailRecordingsList(
                         interactionSource = null,
                         indication = null
                     ),
-                textColor = MaterialTheme.colorScheme.onPrimary,
                 containerColor = MaterialTheme.colorScheme.primary,
+                textColor = MaterialTheme.colorScheme.onPrimary,
                 onClick = onNewRecordingClick,
-                cornerShape = 16.dp,
+                cornerShape = 8.dp,
                 enabled = !isAddingRecording
             )
         }

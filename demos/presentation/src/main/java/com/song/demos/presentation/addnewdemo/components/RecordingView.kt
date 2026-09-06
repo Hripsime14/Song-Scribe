@@ -43,7 +43,7 @@ fun RecordingView(
                 .addDefaultTopPadding(),
             text = recordingSeconds.formatAsDuration(),
             style = MaterialTheme.typography.headlineSmall,
-            color = if (isRecording) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.scrim,
+            color = if (isRecording) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.secondary,
         )
         Text(
             modifier = Modifier

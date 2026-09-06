@@ -2,6 +2,7 @@ package com.song.demos.presentation.demodetail
 
 import android.app.Application
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +13,7 @@ import com.song.demos.presentation.R
 import com.song.demos.presentation.addnewdemo.model.RecordingItemUi
 import com.song.demos.presentation.addnewdemo.recorder.AudioRecorder
 import com.song.demos.presentation.demodetail.mapper.toRecordingItemUi
+import com.song.demos.presentation.demos.mapper.toTagModels
 import com.song.demos.presentation.demos.model.TagModel
 import com.song.demos.presentation.demos.player.DemoPlayer
 import kotlinx.coroutines.Job
@@ -43,9 +45,7 @@ class DemoDetailsViewModel(
 
     fun onAction(action: DemoDetailsAction) {
         when (action) {
-            DemoDetailsAction.OnAddCustomTagClick -> {
-
-            }
+            DemoDetailsAction.OnAddCustomTagClick -> addCustomTag()
 
             DemoDetailsAction.OnAddNewRecordingClick -> addNewRecording()
             DemoDetailsAction.OnCloseNewRecordingSection -> closeNewRecordingSection()
@@ -54,11 +54,15 @@ class DemoDetailsViewModel(
             }
 
             is DemoDetailsAction.OnColorSelect -> {
-
+                _state.update { state ->
+                    state.copy(
+                        colorOptions  = state.colorOptions.map { it.copy(isSelected = it.color == action.color.color) }
+                    )
+                }
             }
 
-            DemoDetailsAction.OnCustomTagClick -> {
-
+            DemoDetailsAction.OnCustomTagClick -> _state.update { state ->
+                state.copy(showAddTagSection = !state.showAddTagSection)
             }
 
             is DemoDetailsAction.OnDeleteRecording -> deleteRecording(action.recordingId)
@@ -66,23 +70,55 @@ class DemoDetailsViewModel(
             DemoDetailsAction.OnSaveDemoClick -> saveChanged()
 
             is DemoDetailsAction.OnSetPrimaryRecording -> setPrimaryRecording(action.recordingId)
-            is DemoDetailsAction.OnTagClick -> {
-
+            is DemoDetailsAction.OnTagClick -> _state.update { state ->
+                state.copy(
+                    tagOptions = state.tagOptions.map { tag ->
+                        if (tag.name == action.tagModel.name) {
+                            tag.copy(isSelected = !tag.isSelected)
+                        } else {
+                            tag
+                        }
+                    }
+                )
             }
 
-            DemoDetailsAction.OnTagCloseClick -> {
+            DemoDetailsAction.OnTagCloseClick -> _state.update { it.copy(showTagSection = false) }
 
-            }
-
-            DemoDetailsAction.OnTagIconClick -> {
-
+            DemoDetailsAction.OnTagIconClick -> _state.update { state ->
+                state.copy(showTagSection = !state.showTagSection)
             }
 
             is DemoDetailsAction.OnTogglePlayback -> togglePlayback(action.recordingId)
             DemoDetailsAction.OnToggleRecording -> {
                 if (_state.value.isRecording) stopRecording() else startRecording()
             }
+
+            is DemoDetailsAction.OnTagOptionsLoaded -> {
+                _state.update { state ->
+                    state.copy(tagOptions = action.tags.toTagModels())
+                }
+            }
         }
+    }
+
+    private fun addCustomTag() {
+        val trimmedName = _state.value.newTagTextState.text.toString().trim()
+        if (trimmedName.isBlank()) return
+
+        _state.update { state ->
+            val alreadyExists = state.tagOptions.any { it.name.equals(trimmedName, ignoreCase = true) }
+            state.copy(
+                tagOptions = if (alreadyExists) {
+                    state.tagOptions.map {
+                        if (it.name.equals(trimmedName, ignoreCase = true)) it.copy(isSelected = true) else it
+                    }
+                } else {
+                    state.tagOptions + TagModel(name = trimmedName, isSelected = true)
+                },
+                showAddTagSection = false
+            )
+        }
+        _state.value.newTagTextState.clearText()
     }
 
     private fun saveChanged() {

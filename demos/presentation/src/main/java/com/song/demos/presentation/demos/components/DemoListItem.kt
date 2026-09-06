@@ -35,7 +35,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.song.core.presentation.designsystem.components.SongScribeBeige
@@ -45,7 +44,6 @@ import com.song.core.presentation.designsystem.extension.addDefaultStartPadding
 import com.song.core.presentation.designsystem.extension.addDefaultTopPadding
 import com.song.core.presentation.ui.util.formatAsDuration
 import com.song.demos.presentation.demos.model.DemoUi
-import com.song.demos.presentation.demos.model.RecordingUi
 
 @Composable
 fun DemoListItem(
@@ -85,7 +83,7 @@ fun DemoListItem(
                 shape = RoundedCornerShape(32.dp)
             )
             .clip(RoundedCornerShape(32.dp))
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
             .clickable(enabled = true, onClick = onItemClick)
     ) {
         Box(modifier = Modifier
@@ -111,6 +109,7 @@ fun DemoListItem(
                         .padding(8.dp),
                     imageVector = Icons.Default.MusicNote,
                     contentDescription = "Note",
+                    tint = MaterialTheme.colorScheme.scrim
                 )
                 Column(
                     modifier = Modifier

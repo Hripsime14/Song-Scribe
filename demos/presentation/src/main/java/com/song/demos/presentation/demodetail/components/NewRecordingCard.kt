@@ -130,7 +130,7 @@ fun NewRecordingCard(
                 Text(
                     text = recordingSeconds.formatAsDuration(),
                     style = MaterialTheme.typography.headlineSmall,
-                    color = if (isRecording) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.scrim,
+                    color = if (isRecording) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.secondary,
                 )
                 Text(
                     text = if (isRecording) {
@@ -149,6 +149,7 @@ fun NewRecordingCard(
                 hasBorder = true,
                 textColor = MaterialTheme.colorScheme.primary,
                 containerColor = Color.Transparent,
+                cornerShape = 8.dp,
                 onClick = { if (canAdd) onAddClick() }
             )
         }

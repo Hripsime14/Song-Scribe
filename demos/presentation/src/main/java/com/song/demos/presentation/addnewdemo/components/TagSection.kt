@@ -52,37 +52,41 @@ fun TagSection(
     onAddCustomTag: () -> Unit = {},
     onCustomTagClick: () -> Unit = {},
     newTagState: TextFieldState,
-    addNewTag: Boolean = false
+    addNewTag: Boolean = false,
+    showTags: Boolean = true
 ) {
     Column (
         modifier = modifier
             .fillMaxWidth()
             .addDefaultTopPadding()
             .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surfaceContainer)
+            .background(MaterialTheme.colorScheme.surfaceContainer),
+        verticalArrangement = Arrangement.Top
     ) {
         Row(
             modifier = Modifier,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(
-                imageVector = Icons.Default.LocalOffer,
-                contentDescription = "Search",
-                modifier = Modifier
-                    .padding(start = 16.dp,top = 16.dp),
-                tint = MaterialTheme.colorScheme.primary,
-            )
-            Text(
-                modifier = Modifier
-                    .padding(start = 4.dp, end = 16.dp, top = 16.dp)
-                    .weight(1f),
-                text = stringResource(R.string.tags),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.primary,
-            )
+            if (showTags) {
+                Icon(
+                    imageVector = Icons.Default.LocalOffer,
+                    contentDescription = "Search",
+                    modifier = Modifier
+                        .padding(start = 16.dp, top = 16.dp),
+                    tint = MaterialTheme.colorScheme.primary,
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(start = 4.dp, end = 16.dp, top = 16.dp)
+                        .weight(1f),
+                    text = stringResource(R.string.tags),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
             SongScribePositiveButton(
                 modifier = Modifier
-                    .padding(end = 16.dp, top = 16.dp),
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp),
                 text = stringResource(R.string.custom),
                 onClick = onCustomTagClick,
                 icon = Icons.Default.Add,
@@ -101,7 +105,8 @@ fun TagSection(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 OutlinedTextField(
-                    modifier = modifier.fillMaxWidth()
+                    modifier = modifier
+                        .fillMaxWidth()
                         .weight(1f),
                     state = newTagState,
                     shape = RoundedCornerShape(8.dp),
