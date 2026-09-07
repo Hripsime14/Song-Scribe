@@ -30,7 +30,7 @@
     <string name="demo_details">Դեմոյի մանրամասներ</string>
     <string name="save">Պահպանել</string>
     <string name="new_recording">ՆՈՐ ՁԱՅՆԱԳՐՈՒԹՅՈՒՆ</string>
-    <string name="recordings_section">ՁԱՅՆԱԳՐՈՒԹՅՈՒՆՆԵՐ</string>
+    <string name="recordings_section">Ձայնագրություններ</string>
     <string name="new_recording_label_hint">Պիտակ (օր.՝ Տարբերակ 2…)</string>
     <string name="close">Փակել</string>
     <string name="appearance">ԱՐՏԱՔԻՆ ՏԵՍՔ</string>
@@ -41,10 +41,16 @@
     <string name="language_armenian">Հայերեն</string>
     <string name="language_russian">Ռուսերեն</string>
     <string name="no_genres_added_tap_to_add">Չկան ընտրված ժանրեր - սեղմեք ավելացնելու համար</string>
+    <string name="tap_star_to_set_primary">հպեք ★-ին՝ հիմնականը սահմանելու համար</string>
 
     <plurals name="word_count">
         <item quantity="one">%d բառ</item>
         <item quantity="other">%d բառ</item>
+    </plurals>
+
+    <plurals name="takes_count">
+        <item quantity="one">%d տարբերակ</item>
+        <item quantity="other">%d տարբերակ</item>
     </plurals>
 
     <string-array name="instruments">

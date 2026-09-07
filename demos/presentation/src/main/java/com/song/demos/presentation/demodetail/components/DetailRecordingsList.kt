@@ -1,25 +1,32 @@
 package com.song.demos.presentation.demodetail.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.song.core.presentation.designsystem.components.SongScribePositiveButton
+import com.song.core.presentation.designsystem.extension.addDefaultStartPadding
 import com.song.core.presentation.designsystem.extension.addDefaultTopPadding
 import com.song.core.presentation.designsystem.theme.SongScribeTheme
 import com.song.demos.presentation.R
@@ -42,20 +49,48 @@ fun DetailRecordingsList(
     onSetPrimaryRecording: (String) -> Unit = {},
     onDeleteRecording: (String) -> Unit = {},
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .addDefaultTopPadding()
+            .clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+            .padding(16.dp)
+    ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .addDefaultTopPadding(),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                modifier = Modifier.weight(1f),
-                text = stringResource(R.string.recordings_section),
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
+            Icon(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(color = MaterialTheme.colorScheme.primary)
+                    .padding(8.dp),
+                imageVector = Icons.Default.MusicNote,
+                contentDescription = "Note",
+                tint = MaterialTheme.colorScheme.onPrimary
             )
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .addDefaultStartPadding()
+            ) {
+                Text(
+                    text = stringResource(R.string.recordings_section),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                Text(
+                    text = pluralStringResource(
+                        R.plurals.takes_count,
+                        recordings.size,
+                        recordings.size
+                    ) + " · " + stringResource(R.string.tap_star_to_set_primary),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
             SongScribePositiveButton (
                 icon = Icons.Default.Add,
                 text = stringResource(R.string.add),

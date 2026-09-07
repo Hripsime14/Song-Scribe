@@ -30,7 +30,7 @@
     <string name="demo_details">Детали демо</string>
     <string name="save">Сохранить</string>
     <string name="new_recording">НОВАЯ ЗАПИСЬ</string>
-    <string name="recordings_section">ЗАПИСИ</string>
+    <string name="recordings_section">Записи</string>
     <string name="new_recording_label_hint">Метка (напр., Дубль 2…)</string>
     <string name="close">Закрыть</string>
     <string name="appearance">ВНЕШНЫЙ ВИД</string>
@@ -41,12 +41,20 @@
     <string name="language_armenian">Армянский</string>
     <string name="language_russian">Русский</string>
     <string name="no_genres_added_tap_to_add">"Жанры не добавлены — нажмите, чтобы добавить.</string>
+    <string name="tap_star_to_set_primary">нажмите ★, чтобы сделать основной</string>
 
     <plurals name="word_count">
         <item quantity="one">%d слово</item>
         <item quantity="few">%d слова</item>
         <item quantity="many">%d слов</item>
         <item quantity="other">%d слова</item>
+    </plurals>
+
+    <plurals name="takes_count">
+        <item quantity="one">%d дубль</item>
+        <item quantity="few">%d дубля</item>
+        <item quantity="many">%d дублей</item>
+        <item quantity="other">%d дубля</item>
     </plurals>
 
     <string-array name="instruments">

@@ -30,7 +30,7 @@
     <string name="demo_details">"Demo Details"</string>
     <string name="save">"Save"</string>
     <string name="new_recording">"NEW RECORDING"</string>
-    <string name="recordings_section">RECORDINGS</string>
+    <string name="recordings_section">Recordings</string>
     <string name="new_recording_label_hint">Label (e.g. Take 2…)</string>
     <string name="close">Close</string>
     <string name="appearance">APPEARANCE</string>
@@ -41,10 +41,16 @@
     <string name="language_armenian">Armenian</string>
     <string name="language_russian">Russian</string>
     <string name="no_genres_added_tap_to_add">No genres added - tap to add</string>
+    <string name="tap_star_to_set_primary">tap ★ to set primary</string>
 
     <plurals name="word_count">
         <item quantity="one">%d word</item>
         <item quantity="other">%d words</item>
+    </plurals>
+
+    <plurals name="takes_count">
+        <item quantity="one">%d take</item>
+        <item quantity="other">%d takes</item>
     </plurals>
 
     <string-array name="instruments">

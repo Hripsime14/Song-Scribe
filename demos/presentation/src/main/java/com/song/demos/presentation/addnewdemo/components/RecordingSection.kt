@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.MaterialTheme
@@ -30,14 +31,18 @@ fun RecordingSection(
     onSetPrimaryRecording: (String) -> Unit = {},
     onDeleteRecording: (String) -> Unit = {},
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .addDefaultTopPadding()
+            .clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+            .padding(16.dp)
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .addDefaultTopPadding()
-                .clip(RoundedCornerShape(32.dp))
-                .height(220.dp)
-                .background(MaterialTheme.colorScheme.surfaceContainer),
+                .height(220.dp),
             contentAlignment = Alignment.Center
         ) {
             RecordingView(

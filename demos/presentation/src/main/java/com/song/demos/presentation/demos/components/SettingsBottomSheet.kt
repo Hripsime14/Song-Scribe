@@ -81,9 +81,11 @@ fun SettingsBottomSheet(
                         .addDefaultStartPadding()
                         .weight(1f),
                     text = stringResource(com.song.core.presentation.designsystem.R.string.settings),
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.headlineSmall
                 )
                 Icon(
+                    modifier = Modifier
+                        .clickable(enabled = true, onClick = onDismiss),
                     imageVector = Icons.Default.Close,
                     contentDescription = stringResource(com.song.core.presentation.designsystem.R.string.close),
                     tint = MaterialTheme.colorScheme.secondary

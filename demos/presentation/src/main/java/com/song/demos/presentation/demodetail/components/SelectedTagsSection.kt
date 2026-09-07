@@ -117,7 +117,7 @@ fun SelectedTagsSection(
         ) {
             Box(
                 modifier = Modifier
-                    .height(0.5.dp)
+                    .height(1.dp)
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.outlineVariant)
             )
