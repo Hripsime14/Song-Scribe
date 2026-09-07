@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="my_demos">Мои демо</string>
+    <string name="search">Поиск</string>
+    <string name="recordings">%d записей</string>
+    <string name="no_demos_yet">Демо пока нет</string>
+    <string name="first_take">Первый дубль</string>
+    <string name="take_number">Дубль %d</string>
+    <string name="set_as_primary_recording">Установить как основную запись</string>
+    <string name="primary_recording">Основная запись</string>
+    <string name="give_your_demo_name">Дайте название вашему демо...</string>
+    <string name="demo_title">НАЗВАНИЕ ДЕМО*</string>
+    <string name="color_label">ЦВЕТОВАЯ МЕТКА</string>
+    <string name="tags">ТЕГИ</string>
+    <string name="lyrics_notes">ТЕКСТ И ЗАМЕТКИ</string>
+    <string name="lyrics_notes_progressions_ideas">Текст, заметки, прогрессии, идеи...</string>
+    <string name="custom">Свой вариант</string>
+    <string name="new_demo">Новое демо</string>
+    <string name="create">Создать</string>
+    <string name="demo_creation_failed">Не удалось создать демо</string>
+    <string name="add_tag">Добавить тег...</string>
+    <string name="add">Добавить</string>
+    <string name="record_something">Запишите что-нибудь, чтобы создать демо</string>
+    <string name="recording">Идёт запись...</string>
+    <string name="tap_to_record">Нажмите, чтобы записать</string>
+    <string name="delete_recording">Удалить запись</string>
+    <string name="are_you_sure">Вы уверены?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="demo_details">Детали демо</string>
+    <string name="save">Сохранить</string>
+    <string name="new_recording">НОВАЯ ЗАПИСЬ</string>
+    <string name="recordings_section">ЗАПИСИ</string>
+    <string name="new_recording_label_hint">Метка (напр., Дубль 2…)</string>
+    <string name="close">Закрыть</string>
+    <string name="appearance">ВНЕШНЫЙ ВИД</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Тёмная</string>
+    <string name="language">ЯЗЫК</string>
+    <string name="language_english">Английский</string>
+    <string name="language_armenian">Армянский</string>
+    <string name="language_russian">Русский</string>
+    <string name="no_genres_added_tap_to_add">"Жанры не добавлены — нажмите, чтобы добавить.</string>
+
+    <plurals name="word_count">
+        <item quantity="one">%d слово</item>
+        <item quantity="few">%d слова</item>
+        <item quantity="many">%d слов</item>
+        <item quantity="other">%d слова</item>
+    </plurals>
+
+    <string-array name="instruments">
+        <item>пианино</item>
+        <item>гитара</item>
+        <item>эмбиент</item>
+        <item>lo-fi</item>
+        <item>луп</item>
+        <item>R&amp;B</item>
+        <item>акустика</item>
+        <item>лайв</item>
+        <item>инструментал</item>
+        <item>фолк</item>
+        <item>электроника</item>
+        <item>джаз</item>
+        <item>поп</item>
+    </string-array>
+</resources>

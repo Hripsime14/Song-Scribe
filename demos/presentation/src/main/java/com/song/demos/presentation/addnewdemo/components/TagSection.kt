@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -81,6 +82,7 @@ fun TagSection(
                         .weight(1f),
                     text = stringResource(R.string.tags),
                     style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary,
                 )
             }
@@ -143,7 +145,13 @@ fun TagSection(
                 val isSelected = tag.isSelected
                 AssistChip(
                     onClick = { onTagClick(tag) },
-                    label = { Text(text = tag.name, style = MaterialTheme.typography.bodyMedium) },
+                    label = {
+                        Text(
+                            text = tag.name,
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    },
                     shape = RoundedCornerShape(32.dp),
                     colors = AssistChipDefaults.assistChipColors(
                         containerColor = if (isSelected) {

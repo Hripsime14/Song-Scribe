@@ -140,6 +140,7 @@ fun DemoListItem(
                                     .addDefaultStartPadding(),
                                 containerColor = MaterialTheme.colorScheme.primary,
                                 textColor = MaterialTheme.colorScheme.onPrimary,
+                                selected = true
                             )
                         }
                     }
@@ -219,6 +220,7 @@ fun DemoListItem(
                        modifier = Modifier.addDefaultTopPadding(),
                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
                        textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                       selected = false
                    )
                }
             }

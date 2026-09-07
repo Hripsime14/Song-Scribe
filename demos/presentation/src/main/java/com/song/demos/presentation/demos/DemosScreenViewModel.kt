@@ -4,6 +4,8 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.song.core.domain.settings.SettingsRepo
+import com.song.core.presentation.ui.util.LocaleUtil
 import com.song.demos.domain.repo.DemosRepo
 import com.song.demos.presentation.demos.mapper.toDemoModel
 import com.song.demos.presentation.demos.model.RecordingUi
@@ -27,12 +29,15 @@ import kotlin.math.ceil
 
 class DemosScreenViewModel(
     private val demosRepo: DemosRepo,
-    private val demoPlayer: DemoPlayer
+    private val demoPlayer: DemoPlayer,
+    private val settingsRepo: SettingsRepo
 ) : ViewModel() {
 
     val searchState = TextFieldState()
 
-    private val _state = MutableStateFlow(DemosScreenState(isLoading = true))
+    private val _state = MutableStateFlow(
+        DemosScreenState(isLoading = true, language = LocaleUtil.getCurrentAppLanguage())
+    )
     val state = _state.asStateFlow()
 
     private val eventChannel = Channel<DemosScreenEvent>()
@@ -60,6 +65,12 @@ class DemosScreenViewModel(
                         error = null
                     )
                 }
+            }
+            .launchIn(viewModelScope)
+
+        settingsRepo.themeMode
+            .onEach { themeMode ->
+                _state.update { it.copy(themeMode = themeMode) }
             }
             .launchIn(viewModelScope)
     }
@@ -100,6 +111,31 @@ class DemosScreenViewModel(
             }
 
             is DemosScreenAction.onTogglePlayClick -> togglePlayback(action.demoId)
+
+            is DemosScreenAction.onSettingsClick -> {
+                _state.update {
+                    it.copy(showSettingsSheet = true)
+                }
+            }
+
+            is DemosScreenAction.onDismissSettingsSheet -> {
+                _state.update {
+                    it.copy(showSettingsSheet = false)
+                }
+            }
+
+            is DemosScreenAction.onThemeModeSelected -> {
+                viewModelScope.launch {
+                    settingsRepo.setThemeMode(action.themeMode)
+                }
+            }
+
+            is DemosScreenAction.onLanguageSelected -> {
+                LocaleUtil.setAppLanguage(action.language)
+                _state.update {
+                    it.copy(language = action.language, showSettingsSheet = false)
+                }
+            }
         }
     }
 

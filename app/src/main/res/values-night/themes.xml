@@ -2,6 +2,6 @@
 <resources>
 
     <style name="Theme.SongScribe" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="android:windowBackground">#FFFBFE</item>
+        <item name="android:windowBackground">#1C1B1F</item>
     </style>
 </resources>

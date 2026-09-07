@@ -1,6 +1,7 @@
 package com.song.scribe
 
 import android.app.Application
+import com.song.core.data.di.coreDataModule
 import com.song.demos.data.di.demosDataModule
 import com.song.demos.presentation.di.demosPresentationModule
 import org.koin.android.ext.koin.androidContext
@@ -15,6 +16,7 @@ class SongScribeApp : Application() {
             androidLogger()
             androidContext(this@SongScribeApp)
             modules(
+                coreDataModule,
                 demosDataModule,
                 demosPresentationModule
             )

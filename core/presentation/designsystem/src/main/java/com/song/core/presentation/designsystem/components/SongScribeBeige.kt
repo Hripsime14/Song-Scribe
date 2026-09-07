@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.song.core.presentation.designsystem.theme.SongScribeTheme
@@ -19,7 +20,8 @@ fun SongScribeBeige(
     modifier: Modifier = Modifier,
     text: String,
     containerColor: Color,
-    textColor: Color
+    textColor: Color,
+    selected: Boolean
 ) {
     Box(
         modifier = modifier
@@ -31,6 +33,7 @@ fun SongScribeBeige(
             text = text,
             style = MaterialTheme.typography.bodyMedium,
             color = textColor,
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
         )
     }
 }
@@ -43,6 +46,7 @@ private fun SongScribeBeigePreview() {
             text = "piano",
             containerColor = MaterialTheme.colorScheme.primary,
             textColor = MaterialTheme.colorScheme.onPrimary,
+            selected = true
             )
     }
 }

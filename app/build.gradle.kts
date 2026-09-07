@@ -49,11 +49,15 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.appcompat)
 
     implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
 
     implementation(project(":core:presentation:designsystem"))
     implementation(project(":core:presentation:ui"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:data"))
     implementation(project(":demos:presentation"))
     implementation(project(":demos:data"))
     testImplementation(libs.junit)

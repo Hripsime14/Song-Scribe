@@ -40,6 +40,7 @@ import com.song.core.presentation.ui.util.ObserveAsEvents
 import com.song.demos.presentation.R
 import com.song.demos.presentation.demos.components.DemoListItem
 import com.song.demos.presentation.demos.components.DemoSearchBar
+import com.song.demos.presentation.demos.components.SettingsBottomSheet
 import com.song.demos.presentation.demos.model.DemoUi
 import com.song.demos.presentation.demos.model.RecordingUi
 import org.koin.androidx.compose.koinViewModel
@@ -82,6 +83,8 @@ fun DemosScreen(
         topBar = {
             SongScribeToolbar(
                 title = stringResource(R.string.my_demos),
+                showSettingsButton = true,
+                onSettingsClick = { onAction(DemosScreenAction.onSettingsClick) }
             )
         },
         floatingActionButton = {
@@ -151,6 +154,19 @@ fun DemosScreen(
                         }
                     }
                 }
+            }
+            if (state.showSettingsSheet) {
+                SettingsBottomSheet(
+                    currentThemeMode = state.themeMode,
+                    currentLanguage = state.language,
+                    onThemeModeSelected = { themeMode ->
+                        onAction(DemosScreenAction.onThemeModeSelected(themeMode))
+                    },
+                    onLanguageSelected = { language ->
+                        onAction(DemosScreenAction.onLanguageSelected(language))
+                    },
+                    onDismiss = { onAction(DemosScreenAction.onDismissSettingsSheet) }
+                )
             }
             Column(
                 modifier = Modifier

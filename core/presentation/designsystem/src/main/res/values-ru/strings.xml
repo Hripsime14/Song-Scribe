@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="my_demos">Мои демо</string>
+    <string name="settings">Настройки</string>
+    <string name="close">Закрыть</string>
+    <string name="back">Назад</string>
+</resources>

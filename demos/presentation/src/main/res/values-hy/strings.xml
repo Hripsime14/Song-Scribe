@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="my_demos">Իմ դեմոները</string>
+    <string name="search">Որոնում</string>
+    <string name="recordings">%d ձայնագրություն</string>
+    <string name="no_demos_yet">Դեռ դեմոներ չկան</string>
+    <string name="first_take">Առաջին տարբերակ</string>
+    <string name="take_number">Տարբերակ %d</string>
+    <string name="set_as_primary_recording">Սահմանել որպես հիմնական ձայնագրություն</string>
+    <string name="primary_recording">Հիմնական ձայնագրություն</string>
+    <string name="give_your_demo_name">Անվանեք ձեր դեմոն...</string>
+    <string name="demo_title">ԴԵՄՈՅԻ ԱՆՈՒՆ*</string>
+    <string name="color_label">ԳՈՒՅՆԻ ԴՐՈՇՄ</string>
+    <string name="tags">ԹԵԳԵՐ</string>
+    <string name="lyrics_notes">ԽՈՍՔԵՐ ԵՎ ՆՇՈՒՄՆԵՐ</string>
+    <string name="lyrics_notes_progressions_ideas">Խոսքեր, նշումներ, պրոգրեսիաներ, գաղափարներ...</string>
+    <string name="custom">Հատուկ</string>
+    <string name="new_demo">Նոր դեմո</string>
+    <string name="create">Ստեղծել</string>
+    <string name="demo_creation_failed">Դեմոն ստեղծել չհաջողվեց</string>
+    <string name="add_tag">Ավելացնել թեգ...</string>
+    <string name="add">Ավելացնել</string>
+    <string name="record_something">Ձայնագրեք ինչ-որ բան՝ դեմո ստեղծելու համար</string>
+    <string name="recording">Ձայնագրվում է...</string>
+    <string name="tap_to_record">Հպեք՝ ձայնագրելու համար</string>
+    <string name="delete_recording">Ջնջել ձայնագրությունը</string>
+    <string name="are_you_sure">Վստա՞հ եք</string>
+    <string name="yes">Այո</string>
+    <string name="no">Ոչ</string>
+    <string name="demo_details">Դեմոյի մանրամասներ</string>
+    <string name="save">Պահպանել</string>
+    <string name="new_recording">ՆՈՐ ՁԱՅՆԱԳՐՈՒԹՅՈՒՆ</string>
+    <string name="recordings_section">ՁԱՅՆԱԳՐՈՒԹՅՈՒՆՆԵՐ</string>
+    <string name="new_recording_label_hint">Պիտակ (օր.՝ Տարբերակ 2…)</string>
+    <string name="close">Փակել</string>
+    <string name="appearance">ԱՐՏԱՔԻՆ ՏԵՍՔ</string>
+    <string name="theme_light">Լուսավոր</string>
+    <string name="theme_dark">Մուգ</string>
+    <string name="language">ԼԵԶՈՒ</string>
+    <string name="language_english">Անգլերեն</string>
+    <string name="language_armenian">Հայերեն</string>
+    <string name="language_russian">Ռուսերեն</string>
+    <string name="no_genres_added_tap_to_add">Չկան ընտրված ժանրեր - սեղմեք ավելացնելու համար</string>
+
+    <plurals name="word_count">
+        <item quantity="one">%d բառ</item>
+        <item quantity="other">%d բառ</item>
+    </plurals>
+
+    <string-array name="instruments">
+        <item>դաշնամուր</item>
+        <item>կիթառ</item>
+        <item>էմբիենթ</item>
+        <item>lo-fi</item>
+        <item>լուպ</item>
+        <item>R&amp;B</item>
+        <item>ակուստիկ</item>
+        <item>լայվ</item>
+        <item>ինստրումենտալ</item>
+        <item>ֆոլկ</item>
+        <item>էլեկտրոնային</item>
+        <item>ջազ</item>
+        <item>փոփ</item>
+    </string-array>
+</resources>

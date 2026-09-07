@@ -33,6 +33,14 @@
     <string name="recordings_section">RECORDINGS</string>
     <string name="new_recording_label_hint">Label (e.g. Take 2…)</string>
     <string name="close">Close</string>
+    <string name="appearance">APPEARANCE</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="language">LANGUAGE</string>
+    <string name="language_english">English</string>
+    <string name="language_armenian">Armenian</string>
+    <string name="language_russian">Russian</string>
+    <string name="no_genres_added_tap_to_add">No genres added - tap to add</string>
 
     <plurals name="word_count">
         <item quantity="one">%d word</item>

@@ -9,14 +9,17 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.song.core.presentation.designsystem.R
 import com.song.core.presentation.designsystem.extension.addDefaultStartPadding
 import com.song.core.presentation.designsystem.theme.SongScribeTheme
 
@@ -25,9 +28,11 @@ fun SongScribeToolbar(
     modifier: Modifier = Modifier,
     showBackButton: Boolean = false,
     showCloseButton: Boolean = false,
-    title: String = "Demos",
+    showSettingsButton: Boolean = false,
+    title: String = stringResource(R.string.my_demos),
     onBackClick: () -> Unit = {},
     onCloseClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {},
     endButton: @Composable () -> Unit = {},
 ) {
     Row(
@@ -41,7 +46,7 @@ fun SongScribeToolbar(
         if (showBackButton) {
             Icon(
                 imageVector = Icons.Default.ArrowBackIosNew,
-                contentDescription = "Back",
+                contentDescription = stringResource(R.string.back),
                 modifier = Modifier.clickable(
                     onClick = onBackClick,
                     interactionSource = null,
@@ -52,9 +57,20 @@ fun SongScribeToolbar(
         if (showCloseButton) {
             Icon(
                 imageVector = Icons.Default.Close,
-                contentDescription = "Close",
+                contentDescription = stringResource(R.string.close),
                 modifier = Modifier.clickable(
                     onClick = onCloseClick,
+                    interactionSource = null,
+                    indication = null
+                ),
+            )
+        }
+        if (showSettingsButton) {
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = stringResource(R.string.settings),
+                modifier = Modifier.clickable(
+                    onClick = onSettingsClick,
                     interactionSource = null,
                     indication = null
                 ),
