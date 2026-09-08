@@ -58,7 +58,9 @@ fun DetailRecordingsList(
             .padding(16.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -86,7 +88,9 @@ fun DetailRecordingsList(
                         R.plurals.takes_count,
                         recordings.size,
                         recordings.size
-                    ) + " · " + stringResource(R.string.tap_star_to_set_primary),
+                    ) + if (recordings.count() > 1) {
+                        " · " + stringResource(R.string.tap_star_to_set_primary)
+                    } else "",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -115,7 +119,8 @@ fun DetailRecordingsList(
                     recording = recording,
                     onPlayPauseClick = { onPlayPauseRecording(recording.id) },
                     onSetPrimaryClick = { onSetPrimaryRecording(recording.id) },
-                    onDeleteClick = { onDeleteRecording(recording.id) }
+                    onDeleteClick = { onDeleteRecording(recording.id) },
+                    showDeleteButton = recordings.size > 1
                 )
             }
         }

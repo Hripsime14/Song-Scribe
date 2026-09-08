@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.input.TextFieldLineLimits
@@ -51,7 +52,8 @@ fun RecordingListItem(
     recording: RecordingItemUi,
     onPlayPauseClick: () -> Unit = {},
     onSetPrimaryClick: () -> Unit = {},
-    onDeleteClick: () -> Unit = {}
+    onDeleteClick: () -> Unit = {},
+    showDeleteButton: Boolean = true
 ) {
     val playbackProgress = if (recording.durationSeconds > 0) {
         (recording.currentDuration.toFloat() / recording.durationSeconds.toFloat()).coerceIn(0f, 1f)
@@ -114,18 +116,21 @@ fun RecordingListItem(
                     ),
                     cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
                 )
-                Icon(
-                    modifier = Modifier
-                        .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
-                        .clickable(
-                            onClick = onDeleteClick,
-                            interactionSource = null,
-                            indication = null
-                        ),
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = stringResource(R.string.delete_recording),
-                    tint = MaterialTheme.colorScheme.secondary
-                )
+                if (showDeleteButton) {
+                    Icon(
+                        modifier = Modifier
+                            .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
+                            .clickable(
+                                onClick = onDeleteClick,
+                                interactionSource = null,
+                                indication = null
+                            )
+                            .size(20.dp),
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = stringResource(R.string.delete_recording),
+                        tint = MaterialTheme.colorScheme.error.copy(alpha = 0.65f)
+                    )
+                }
             }
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 4.dp, start = 8.dp)) {
                 SongScribeButton(

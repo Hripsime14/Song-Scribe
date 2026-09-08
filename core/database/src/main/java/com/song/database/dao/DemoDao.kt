@@ -45,9 +45,15 @@ interface DemoDao {
     @Upsert
     suspend fun upsertRecordings(recordings: List<RecordingEntity>)
 
+    @Query("SELECT id FROM recording WHERE demoId = :demoId")
+    suspend fun getRecordingIdsForDemo(demoId: String): List<String>
+
     @Transaction
     suspend fun upsertDemoWithRecordings(demoWithRecordings: DemoWithRecordings) {
         upsertDemo(demoWithRecordings.demo)
+        val incomingIds = demoWithRecordings.recordings.map { it.id }.toSet()
+        val existingIds = getRecordingIdsForDemo(demoWithRecordings.demo.id)
+        existingIds.filter { it !in incomingIds }.forEach { deleteRecording(it) }
         upsertRecordings(demoWithRecordings.recordings)
     }
 

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
@@ -44,6 +45,7 @@ import com.song.core.presentation.designsystem.extension.addDefaultStartPadding
 import com.song.core.presentation.designsystem.extension.addDefaultTopPadding
 import com.song.core.presentation.ui.util.formatAsDuration
 import com.song.demos.presentation.demos.model.DemoUi
+import com.song.demos.presentation.demos.model.RecordingUi
 
 @Composable
 fun DemoListItem(
@@ -100,7 +102,8 @@ fun DemoListItem(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(IntrinsicSize.Max)
+                    .height(IntrinsicSize.Max),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     modifier = Modifier
@@ -150,9 +153,10 @@ fun DemoListItem(
                     onClick = onDeleteClick
                 ) {
                     Icon(
+                        modifier = Modifier.size(20.dp),
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Delete",
-                        tint = MaterialTheme.colorScheme.secondary
+                        tint = MaterialTheme.colorScheme.error.copy(alpha = 0.65f)
                     )
                 }
             }
@@ -233,33 +237,24 @@ fun DemoListItem(
 @Composable
 private fun DemoListItemPreview() {
     SongScribeTheme {
-//        DemoListItem(
-//            demoUi = DemoUi(
-//                id = "1",
-//                title = "Yellow Stone",
-//                date = "21/07/2022",
-//                colorLabel = MaterialTheme.colorScheme.tertiaryFixed,
-//                recordings = listOf(
-//                    RecordingUi(
-//                        id = "1",
-//                        title = "First Take",
-//                        duration = 33,
-//                        isPrimary = true,
-//                        recording = "",
-//                        currentDuration = 15,
-//                    ),
-//                    RecordingUi(
-//                        id = "2",
-//                        title = "Second Take",
-//                        duration = 40,
-//                        isPrimary = false,
-//                        recording = "",
-//                        currentDuration = 15,
-//                    )
-//                ),
-//                genres = listOf("piano", "guitar", "drums", "piano", "guitar", "drums", "piano", "guitar", "drums"),
-//                moreRecordingCount = 2
-//            )
-//        )
+        DemoListItem(
+            demoUi = DemoUi(
+                id = "1",
+                title = "Yellow Stone",
+                date = "21/07/2022",
+                colorLabel = MaterialTheme.colorScheme.tertiaryFixed,
+                recording = RecordingUi(
+                    id = "1",
+                    title = "First Take",
+                    duration = 33,
+                    currentDuration = 15,
+                    isPrimary = true,
+                    recording = "",
+                    isPlaying = false
+                ),
+                genres = listOf("piano", "guitar", "drums", "piano", "guitar", "drums", "piano", "guitar", "drums"),
+                moreRecordingCount = 2
+            )
+        )
     }
 }

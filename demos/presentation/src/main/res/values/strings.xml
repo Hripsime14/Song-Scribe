@@ -27,6 +27,10 @@
     <string name="are_you_sure">"Are you sure?"</string>
     <string name="yes">"Yes"</string>
     <string name="no">"No"</string>
+    <string name="delete_demo_title">Delete demo?</string>
+    <string name="delete_demo_message">"\'%1$s\' and all its recordings will be permanently deleted. This action can\'t be undone."</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
     <string name="demo_details">"Demo Details"</string>
     <string name="save">"Save"</string>
     <string name="new_recording">"NEW RECORDING"</string>

@@ -27,6 +27,10 @@
     <string name="are_you_sure">Վստա՞հ եք</string>
     <string name="yes">Այո</string>
     <string name="no">Ոչ</string>
+    <string name="delete_demo_title">Ջնջե՞լ դեմոն</string>
+    <string name="delete_demo_message">"«%1$s»-ը և դրա բոլոր ձայնագրությունները վերջնականապես կջնջվեն։ Այս գործողությունը հնարավոր չէ հետարկել։"</string>
+    <string name="delete">Ջնջել</string>
+    <string name="cancel">Չեղարկել</string>
     <string name="demo_details">Դեմոյի մանրամասներ</string>
     <string name="save">Պահպանել</string>
     <string name="new_recording">ՆՈՐ ՁԱՅՆԱԳՐՈՒԹՅՈՒՆ</string>

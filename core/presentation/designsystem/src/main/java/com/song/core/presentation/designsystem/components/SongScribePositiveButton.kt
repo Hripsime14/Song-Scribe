@@ -45,7 +45,7 @@ fun SongScribePositiveButton(
                 shape = RoundedCornerShape(cornerShape)
             )
             .background(if (enabled) containerColor else containerColor.copy(alpha = 0.3f))
-            .clickable(onClick = onClick, interactionSource = null, indication = null)
+            .clickable(enabled = enabled, onClick = onClick, interactionSource = null, indication = null)
             .padding(horizontal = 8.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
