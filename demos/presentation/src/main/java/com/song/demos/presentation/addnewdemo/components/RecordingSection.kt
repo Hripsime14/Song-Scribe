@@ -26,6 +26,7 @@ fun RecordingSection(
     isRecording: Boolean = false,
     recordingSeconds: Int = 0,
     recordings: List<RecordingItemUi> = emptyList(),
+    canRecord: Boolean = true,
     onToggleRecording: () -> Unit = {},
     onPlayPauseRecording: (String) -> Unit = {},
     onSetPrimaryRecording: (String) -> Unit = {},
@@ -48,6 +49,7 @@ fun RecordingSection(
             RecordingView(
                 isRecording = isRecording,
                 recordingSeconds = recordingSeconds,
+                enabled = isRecording || canRecord,
                 onToggleRecording = onToggleRecording,
             )
         }

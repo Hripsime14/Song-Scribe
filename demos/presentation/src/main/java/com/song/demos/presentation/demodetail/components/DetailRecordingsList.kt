@@ -1,5 +1,6 @@
 package com.song.demos.presentation.demodetail.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.song.core.domain.validation.DemoValidator
 import com.song.core.presentation.designsystem.components.SongScribePositiveButton
 import com.song.core.presentation.designsystem.extension.addDefaultStartPadding
 import com.song.core.presentation.designsystem.extension.addDefaultTopPadding
@@ -83,24 +85,29 @@ fun DetailRecordingsList(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary,
                 )
+                val canAddMoreRecordings = DemoValidator.canAddRecording(recordings.size)
                 Text(
                     text = pluralStringResource(
                         R.plurals.takes_count,
                         recordings.size,
                         recordings.size
-                    ) + if (recordings.count() > 1) {
-                        " · " + stringResource(R.string.tap_star_to_set_primary)
-                    } else "",
+                    ) + when {
+                        !canAddMoreRecordings -> " · " + stringResource(R.string.max_recordings_reached)
+                        recordings.count() > 1 -> " · " + stringResource(R.string.tap_star_to_set_primary)
+                        else -> ""
+                    },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            SongScribePositiveButton (
+            val canAddMoreRecordings = DemoValidator.canAddRecording(recordings.size)
+            SongScribePositiveButton(
                 icon = Icons.Default.Add,
                 text = stringResource(R.string.add),
                 modifier = Modifier
                     .padding(4.dp)
                     .clickable(
+                        enabled = !isAddingRecording && canAddMoreRecordings,
                         onClick = onNewRecordingClick,
                         interactionSource = null,
                         indication = null
@@ -109,7 +116,7 @@ fun DetailRecordingsList(
                 textColor = MaterialTheme.colorScheme.onPrimary,
                 onClick = onNewRecordingClick,
                 cornerShape = 8.dp,
-                enabled = !isAddingRecording
+                enabled = !isAddingRecording && canAddMoreRecordings
             )
         }
 
@@ -125,11 +132,13 @@ fun DetailRecordingsList(
             }
         }
 
-        if (isAddingRecording) {
+        AnimatedVisibility(
+            visible = isAddingRecording
+        ) {
             NewRecordingCard(
                 isRecording = isRecording,
                 recordingSeconds = recordingSeconds,
-                canAdd = !isRecording && recordingSeconds > 0,
+                canAdd = !isRecording && DemoValidator.isRecordingDurationValid(recordingSeconds),
                 labelState = newRecordingLabelState,
                 onToggleRecording = onToggleRecording,
                 onAddClick = onAddNewRecordingClick,

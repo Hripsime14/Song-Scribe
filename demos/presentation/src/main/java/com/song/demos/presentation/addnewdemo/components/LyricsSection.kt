@@ -3,12 +3,14 @@ package com.song.demos.presentation.addnewdemo.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -23,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.song.core.domain.validation.DemoValidationRules
 import com.song.core.presentation.designsystem.extension.addDefaultTopPadding
 import com.song.core.presentation.designsystem.theme.SongScribeTheme
 import com.song.demos.presentation.R
@@ -35,7 +38,6 @@ fun LyricsSection(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .height(220.dp)
             .addDefaultTopPadding()
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surfaceContainer),
@@ -49,10 +51,13 @@ fun LyricsSection(
             color = MaterialTheme.colorScheme.primary,
         )
         OutlinedTextField(
-            modifier = modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 160.dp, max = 360.dp),
             state = lyricsState,
-            lineLimits = TextFieldLineLimits.SingleLine,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            inputTransformation = InputTransformation.maxLength(DemoValidationRules.LYRICS_MAX_LENGTH),
+            lineLimits = TextFieldLineLimits.MultiLine(minHeightInLines = 4),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Default),
             placeholder = {
                 Text(
                     text = stringResource(R.string.lyrics_notes_progressions_ideas),

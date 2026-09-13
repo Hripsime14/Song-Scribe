@@ -31,6 +31,12 @@
     <string name="delete_demo_message">"\'%1$s\' and all its recordings will be permanently deleted. This action can\'t be undone."</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="max_recordings_reached">Maximum 10 recordings reached</string>
+    <string name="no_lyrics_hint">No lyrics yet — tap above to add them</string>
+    <string name="discard_changes_title">Discard changes?</string>
+    <string name="discard_changes_message">You have unsaved changes. If you leave now, they\'ll be lost.</string>
+    <string name="keep_editing">Keep editing</string>
+    <string name="discard">Discard</string>
     <string name="demo_details">"Demo Details"</string>
     <string name="save">"Save"</string>
     <string name="new_recording">"NEW RECORDING"</string>
@@ -45,11 +51,17 @@
     <string name="language_armenian">Armenian</string>
     <string name="language_russian">Russian</string>
     <string name="no_genres_added_tap_to_add">No genres added - tap to add</string>
+    <string name="remove_tag">Remove tag</string>
     <string name="tap_star_to_set_primary">tap ★ to set primary</string>
 
     <plurals name="word_count">
         <item quantity="one">%d word</item>
         <item quantity="other">%d words</item>
+    </plurals>
+
+    <plurals name="chars_remaining">
+        <item quantity="one">%d character left</item>
+        <item quantity="other">%d characters left</item>
     </plurals>
 
     <plurals name="takes_count">

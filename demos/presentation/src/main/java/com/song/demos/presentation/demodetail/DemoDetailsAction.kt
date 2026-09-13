@@ -8,6 +8,7 @@ sealed interface DemoDetailsAction {
     data class OnColorSelect(val color: ColorModel): DemoDetailsAction
     data object OnTagIconClick: DemoDetailsAction
     data class OnTagClick(val tagModel: TagModel): DemoDetailsAction
+    data class OnRemoveCustomTagClick(val tagModel: TagModel): DemoDetailsAction
     data object OnTagCloseClick: DemoDetailsAction
     data object OnCustomTagClick : DemoDetailsAction
     data object OnAddCustomTagClick : DemoDetailsAction

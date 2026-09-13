@@ -19,4 +19,8 @@ class NewDemoRepoImpl(
             )
         )
     }
+
+    override suspend fun isTitleTaken(title: String): Boolean {
+        return demoDao.existsDemoWithTitle(title)
+    }
 }

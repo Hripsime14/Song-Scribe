@@ -6,21 +6,27 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.song.core.domain.validation.DemoValidationRules
+import com.song.core.domain.validation.DemoValidator
 import com.song.demos.domain.repo.DemoDetailsRepo
 import com.song.demos.domain.repo.model.Demo
 import com.song.demos.domain.repo.model.Recording
 import com.song.demos.presentation.R
 import com.song.demos.presentation.addnewdemo.model.RecordingItemUi
 import com.song.demos.presentation.addnewdemo.recorder.AudioRecorder
+import com.song.demos.presentation.common.DemoSnapshot
+import com.song.demos.presentation.common.buildDemoSnapshot
 import com.song.demos.presentation.demodetail.mapper.toRecordingItemUi
 import com.song.demos.presentation.demos.mapper.toTagModels
 import com.song.demos.presentation.demos.model.TagModel
 import com.song.demos.presentation.demos.player.DemoPlayer
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -37,11 +43,31 @@ class DemoDetailsViewModel(
     private val _state = MutableStateFlow(DemoDetailsState())
     val state = _state.asStateFlow()
 
+    private val eventChannel = Channel<DemoDetailsEvent>()
+    val events = eventChannel.receiveAsFlow()
+
     private val audioRecorder = AudioRecorder(application)
     private var timerJob: Job? = null
 
     private var progressJob: Job? = null
     private var playingRecordingId: String? = null
+
+    private var baselineSnapshot: DemoSnapshot = buildSnapshot(_state.value)
+
+    fun hasUnsavedChanges(): Boolean {
+        val currentState = _state.value
+        val hasPendingRecording = currentState.isAddingRecording &&
+            (currentState.isRecording || currentState.recordingFilePath != null)
+        return hasPendingRecording || buildSnapshot(currentState) != baselineSnapshot
+    }
+
+    private fun buildSnapshot(state: DemoDetailsState): DemoSnapshot = buildDemoSnapshot(
+        title = state.titleTextState.text.toString(),
+        lyrics = state.lyricsTextState.text.toString(),
+        colorOptions = state.colorOptions,
+        tagOptions = state.tagOptions,
+        recordings = state.recordings
+    )
 
     fun onAction(action: DemoDetailsAction) {
         when (action) {
@@ -66,7 +92,11 @@ class DemoDetailsViewModel(
             }
 
             is DemoDetailsAction.OnDeleteRecording -> deleteRecording(action.recordingId)
-            DemoDetailsAction.OnNewRecordingClick -> _state.update { it.copy(isAddingRecording = true) }
+            DemoDetailsAction.OnNewRecordingClick -> {
+                if (DemoValidator.canAddRecording(_state.value.recordings.size)) {
+                    _state.update { it.copy(isAddingRecording = true) }
+                }
+            }
             DemoDetailsAction.OnSaveDemoClick -> saveChanged()
 
             is DemoDetailsAction.OnSetPrimaryRecording -> setPrimaryRecording(action.recordingId)
@@ -79,6 +109,12 @@ class DemoDetailsViewModel(
                             tag
                         }
                     }
+                )
+            }
+
+            is DemoDetailsAction.OnRemoveCustomTagClick -> _state.update { state ->
+                state.copy(
+                    tagOptions = state.tagOptions.filterNot { it.name == action.tagModel.name }
                 )
             }
 
@@ -113,7 +149,7 @@ class DemoDetailsViewModel(
                         if (it.name.equals(trimmedName, ignoreCase = true)) it.copy(isSelected = true) else it
                     }
                 } else {
-                    state.tagOptions + TagModel(name = trimmedName, isSelected = true)
+                    state.tagOptions + TagModel(name = trimmedName, isSelected = true, isCustom = true)
                 },
                 showAddTagSection = false
             )
@@ -123,14 +159,24 @@ class DemoDetailsViewModel(
 
     private fun saveChanged() {
         val currentState = _state.value
-        if (currentState.isSaving) return
+        val title = currentState.titleTextState.text.toString().trim()
+        if (!DemoValidator.canSaveDemo(
+                title = title,
+                recordingCount = currentState.recordings.size,
+                isSaving = currentState.isSaving,
+                isRecording = currentState.isRecording,
+                isAddingRecording = currentState.isAddingRecording
+            )
+        ) {
+            return
+        }
 
         val selectedColor = currentState.colorOptions.firstOrNull { it.isSelected }
             ?: currentState.colorOptions.first()
 
         val demo = Demo(
             id = currentState.demoId,
-            title = currentState.titleTextState.text.toString().trim(),
+            title = title,
             createdAtMillis = currentState.createdAtMillis,
             colorLabel = selectedColor.color.toArgb().toLong(),
             genres = currentState.tagOptions.filter { it.isSelected }.map { it.name },
@@ -164,7 +210,7 @@ class DemoDetailsViewModel(
     private fun applyDemo(demo: Demo) {
         _state.update { state ->
             val selectedGenreTags =
-                demo.genres.map { genre -> TagModel(name = genre, isSelected = true) }
+                demo.genres.map { genre -> TagModel(name = genre, isSelected = true, isCustom = true) }
             val mergedTagOptions = state.tagOptions.map { tag ->
                 tag.copy(isSelected = demo.genres.any { it.equals(tag.name, ignoreCase = true) })
             } + selectedGenreTags.filterNot { newTag ->
@@ -183,6 +229,7 @@ class DemoDetailsViewModel(
                 recordings = demo.recordings.map { it.toRecordingItemUi() }
             )
         }
+        baselineSnapshot = buildSnapshot(_state.value)
     }
 
     private fun startRecording() {
@@ -200,7 +247,11 @@ class DemoDetailsViewModel(
         timerJob = viewModelScope.launch {
             while (isActive) {
                 delay(ONE_SECOND_MILLIS)
-                _state.update { state -> state.copy(recordingSeconds = state.recordingSeconds + 1) }
+                val newSeconds = _state.value.recordingSeconds + 1
+                _state.update { state -> state.copy(recordingSeconds = newSeconds) }
+                if (newSeconds >= DemoValidationRules.MAX_RECORDING_SECONDS) {
+                    stopRecording()
+                }
             }
         }
     }
@@ -221,6 +272,8 @@ class DemoDetailsViewModel(
     private fun addNewRecording() {
         val currentState = _state.value
         val filePath = currentState.recordingFilePath ?: return
+        if (!DemoValidator.isRecordingDurationValid(currentState.recordingSeconds)) return
+        if (!DemoValidator.canAddRecording(currentState.recordings.size)) return
 
         val labelText = currentState.newRecordingLabelState.text.toString().trim()
         val title = labelText.ifBlank {

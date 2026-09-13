@@ -2,6 +2,8 @@ package com.song.demos.presentation.demodetail
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,6 +18,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
@@ -24,15 +29,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.song.core.domain.validation.DemoValidationRules
+import com.song.core.domain.validation.DemoValidator
 import com.song.core.presentation.designsystem.components.SongScribePositiveButton
 import com.song.core.presentation.designsystem.components.SongScribeToolbar
 import com.song.core.presentation.designsystem.theme.SongScribeTheme
-import com.song.core.presentation.ui.util.countWords
+import com.song.core.presentation.ui.util.ObserveAsEvents
 import com.song.core.presentation.ui.util.formatDate
 import com.song.demos.presentation.R
 import com.song.demos.presentation.addnewdemo.components.DemoTitleSection
 import com.song.demos.presentation.addnewdemo.components.InfoSection
 import com.song.demos.presentation.addnewdemo.components.LyricsSection
+import com.song.demos.presentation.common.DiscardChangesDialog
 import com.song.demos.presentation.demodetail.components.SelectedTagsSection
 import com.song.demos.presentation.demodetail.components.DetailRecordingsList
 import com.song.demos.presentation.demodetail.components.SelectedColorLabelSection
@@ -64,6 +72,23 @@ fun DemoDetailsScreenRoot(
         }
     }
 
+    var showDiscardDialog by remember { mutableStateOf(false) }
+    val requestBack = {
+        if (viewModel.hasUnsavedChanges()) showDiscardDialog = true else onBackClick()
+    }
+
+    BackHandler(onBack = requestBack)
+
+    if (showDiscardDialog) {
+        DiscardChangesDialog(
+            onKeepEditing = { showDiscardDialog = false },
+            onDiscard = {
+                showDiscardDialog = false
+                onBackClick()
+            }
+        )
+    }
+
     DemoDetailsScreen(
         state = state,
         onAction = { action ->
@@ -81,7 +106,7 @@ fun DemoDetailsScreenRoot(
             }
         },
         onSaveClick = onSaveChanges,
-        onBackClick = onBackClick
+        onBackClick = requestBack
     )
 }
 
@@ -101,9 +126,13 @@ fun DemoDetailsScreen(
                 showBackButton = true,
                 onBackClick = onBackClick,
                 endButton = {
-                    val canCreate = state.titleTextState.text.isNotBlank() &&
-                            state.recordings.isNotEmpty() &&
-                            !state.isSaving
+                    val canCreate = DemoValidator.canSaveDemo(
+                        title = state.titleTextState.text.toString().trim(),
+                        recordingCount = state.recordings.size,
+                        isSaving = state.isSaving,
+                        isRecording = state.isRecording,
+                        isAddingRecording = state.isAddingRecording
+                    )
                     SongScribePositiveButton(
                         onClick = {
                             onAction(DemoDetailsAction.OnSaveDemoClick)
@@ -149,6 +178,7 @@ fun DemoDetailsScreen(
                             newTagState = state.newTagTextState,
                             onEditClick = { onAction(DemoDetailsAction.OnTagIconClick) },
                             onTagClick = { tag -> onAction(DemoDetailsAction.OnTagClick(tag)) },
+                            onRemoveTagClick = { tag -> onAction(DemoDetailsAction.OnRemoveCustomTagClick(tag)) },
                             onCustomTagClick = { onAction(DemoDetailsAction.OnCustomTagClick) },
                             onAddCustomTag = { onAction(DemoDetailsAction.OnAddCustomTagClick) }
                         )
@@ -174,7 +204,8 @@ fun DemoDetailsScreen(
                     }
                     DemoDetailsSections.Info -> InfoSection(
                         createdTime = state.createdAtMillis.formatDate(),
-                        wordsCount = countWords(state.lyricsTextState.text.toString())
+                        remainingChars = DemoValidationRules.LYRICS_MAX_LENGTH - state.lyricsTextState.text.length,
+                        showLyricsHint = state.lyricsTextState.text.isBlank() && state.recordings.isNotEmpty()
                     )
                     DemoDetailsSections.Lyrics -> LyricsSection(
                         lyricsState = state.lyricsTextState

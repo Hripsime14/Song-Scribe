@@ -65,6 +65,14 @@ fun SongScribeToolbar(
                 ),
             )
         }
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .addDefaultStartPadding()
+            ,
+            text = title,
+            style = MaterialTheme.typography.headlineMedium,
+        )
         if (showSettingsButton) {
             Icon(
                 imageVector = Icons.Default.Settings,
@@ -76,14 +84,6 @@ fun SongScribeToolbar(
                 ),
             )
         }
-        Text(
-            modifier = Modifier
-                .weight(1f)
-                .addDefaultStartPadding()
-            ,
-            text = title,
-            style = MaterialTheme.typography.headlineMedium,
-        )
         endButton()
     }
 }

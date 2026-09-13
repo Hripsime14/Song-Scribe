@@ -16,8 +16,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Pause
@@ -37,6 +39,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.song.core.domain.validation.DemoValidationRules
 import com.song.core.presentation.designsystem.components.SongScribeButton
 import com.song.core.presentation.designsystem.extension.addDefaultStartPadding
 import com.song.core.presentation.designsystem.extension.addDefaultTopPadding
@@ -109,6 +112,7 @@ fun RecordingListItem(
                 )
                 BasicTextField(
                     modifier = Modifier.weight(1f),
+                    inputTransformation = InputTransformation.maxLength(DemoValidationRules.TITLE_MAX_LENGTH),
                     state = recording.titleState,
                     lineLimits = TextFieldLineLimits.SingleLine,
                     textStyle = MaterialTheme.typography.bodyMedium.copy(
@@ -132,7 +136,10 @@ fun RecordingListItem(
                     )
                 }
             }
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 4.dp, start = 8.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(top = 4.dp, start = 8.dp)
+            ) {
                 SongScribeButton(
                     icon = if (recording.isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
                     onClick = onPlayPauseClick

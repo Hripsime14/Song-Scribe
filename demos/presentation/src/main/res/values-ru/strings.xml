@@ -31,6 +31,12 @@
     <string name="delete_demo_message">"«%1$s» и все его записи будут удалены безвозвратно. Это действие нельзя отменить."</string>
     <string name="delete">Удалить</string>
     <string name="cancel">Отмена</string>
+    <string name="max_recordings_reached">Достигнут лимит в 10 записей</string>
+    <string name="no_lyrics_hint">Пока нет текста песни — нажмите выше, чтобы добавить</string>
+    <string name="discard_changes_title">Отменить изменения?</string>
+    <string name="discard_changes_message">"У вас есть несохранённые изменения. Если вы уйдёте сейчас, они будут потеряны."</string>
+    <string name="keep_editing">Продолжить редактирование</string>
+    <string name="discard">Отменить</string>
     <string name="demo_details">Детали демо</string>
     <string name="save">Сохранить</string>
     <string name="new_recording">НОВАЯ ЗАПИСЬ</string>
@@ -45,6 +51,7 @@
     <string name="language_armenian">Армянский</string>
     <string name="language_russian">Русский</string>
     <string name="no_genres_added_tap_to_add">"Жанры не добавлены — нажмите, чтобы добавить.</string>
+    <string name="remove_tag">Удалить тег</string>
     <string name="tap_star_to_set_primary">нажмите ★, чтобы сделать основной</string>
 
     <plurals name="word_count">
@@ -52,6 +59,13 @@
         <item quantity="few">%d слова</item>
         <item quantity="many">%d слов</item>
         <item quantity="other">%d слова</item>
+    </plurals>
+
+    <plurals name="chars_remaining">
+        <item quantity="one">Остался %d символ</item>
+        <item quantity="few">Осталось %d символа</item>
+        <item quantity="many">Осталось %d символов</item>
+        <item quantity="other">Осталось %d символа</item>
     </plurals>
 
     <plurals name="takes_count">

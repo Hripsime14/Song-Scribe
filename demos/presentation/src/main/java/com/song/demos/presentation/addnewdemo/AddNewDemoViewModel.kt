@@ -6,12 +6,16 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.song.core.domain.validation.DemoValidationRules
+import com.song.core.domain.validation.DemoValidator
 import com.song.demos.domain.repo.NewDemoRepo
 import com.song.demos.domain.repo.model.Demo
 import com.song.demos.domain.repo.model.Recording
 import com.song.demos.presentation.R
 import com.song.demos.presentation.addnewdemo.model.RecordingItemUi
 import com.song.demos.presentation.addnewdemo.recorder.AudioRecorder
+import com.song.demos.presentation.common.DemoSnapshot
+import com.song.demos.presentation.common.buildDemoSnapshot
 import com.song.demos.presentation.demos.mapper.toTagModels
 import com.song.demos.presentation.demos.model.TagModel
 import com.song.demos.presentation.demos.player.DemoPlayer
@@ -46,6 +50,18 @@ class AddNewDemoViewModel(
     private var progressJob: Job? = null
     private var playingRecordingId: String? = null
 
+    private val baselineSnapshot: DemoSnapshot = buildSnapshot(_state.value)
+
+    fun hasUnsavedChanges(): Boolean = buildSnapshot(_state.value) != baselineSnapshot
+
+    private fun buildSnapshot(state: AddNewDemoState): DemoSnapshot = buildDemoSnapshot(
+        title = state.titleTextState.text.toString(),
+        lyrics = state.lyricsTextState.text.toString(),
+        colorOptions = state.colorOptions,
+        tagOptions = state.tagOptions,
+        recordings = state.recordings
+    )
+
     fun onAction(action: AddNewDemoAction) {
         when (action) {
             is AddNewDemoAction.OnTagOptionsLoaded -> _state.update { state ->
@@ -67,6 +83,12 @@ class AddNewDemoViewModel(
                             it
                         }
                     }
+                )
+            }
+
+            is AddNewDemoAction.OnRemoveCustomTagClick -> _state.update { state ->
+                state.copy(
+                    tagOptions = state.tagOptions.filterNot { it.name == action.tag.name }
                 )
             }
 
@@ -92,7 +114,7 @@ class AddNewDemoViewModel(
                                 if (it.name.equals(newTagName, ignoreCase = true)) it.copy(isSelected = true) else it
                             }
                         } else {
-                            state.tagOptions + TagModel(name = newTagName, isSelected = true)
+                            state.tagOptions + TagModel(name = newTagName, isSelected = true, isCustom = true)
                         },
                         showAddTagSection = false
                     )
@@ -124,7 +146,11 @@ class AddNewDemoViewModel(
         timerJob = viewModelScope.launch {
             while (isActive) {
                 delay(ONE_SECOND_MILLIS)
-                _state.update { state -> state.copy(recordingSeconds = state.recordingSeconds + 1) }
+                val newSeconds = _state.value.recordingSeconds + 1
+                _state.update { state -> state.copy(recordingSeconds = newSeconds) }
+                if (newSeconds >= DemoValidationRules.MAX_RECORDING_SECONDS) {
+                    stopRecording()
+                }
             }
         }
     }
@@ -134,6 +160,14 @@ class AddNewDemoViewModel(
         timerJob = null
         val file = audioRecorder.stop() ?: return
         val currentState = _state.value
+
+        if (!DemoValidator.isRecordingDurationValid(currentState.recordingSeconds)) {
+            file.delete()
+            _state.update { state ->
+                state.copy(isRecording = false, recordingSeconds = 0, recordingFilePath = null)
+            }
+            return
+        }
 
         val takeTitle = if (currentState.recordings.isEmpty()) {
             getApplication<Application>().getString(R.string.first_take)
@@ -245,13 +279,11 @@ class AddNewDemoViewModel(
 
     private fun createDemo() {
         val currentState = _state.value
-        if (currentState.isSaving) return
-        if (currentState.isRecording) stopRecording()
-
-        val recordings = _state.value.recordings
-        if (recordings.isEmpty()) return
         val title = currentState.titleTextState.text.toString().trim()
-        if (title.isBlank()) return
+        val recordings = currentState.recordings
+        if (!DemoValidator.canSaveDemo(title, recordings.size, currentState.isSaving, currentState.isRecording)) {
+            return
+        }
 
         val createdAtMillis = System.currentTimeMillis()
         val selectedColor = currentState.colorOptions.firstOrNull { it.isSelected }

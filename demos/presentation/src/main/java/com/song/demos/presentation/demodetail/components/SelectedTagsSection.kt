@@ -46,6 +46,7 @@ fun SelectedTagsSection(
     newTagState: TextFieldState = TextFieldState(),
     onEditClick: () -> Unit = {},
     onTagClick: (TagModel) -> Unit = {},
+    onRemoveTagClick: (TagModel) -> Unit = {},
     onCustomTagClick: () -> Unit = {},
     onAddCustomTag: () -> Unit = {},
 ) {
@@ -124,6 +125,7 @@ fun SelectedTagsSection(
             TagSection(
                 tags = tagOptions,
                 onTagClick = onTagClick,
+                onRemoveTagClick = onRemoveTagClick,
                 onAddCustomTag = onAddCustomTag,
                 onCustomTagClick = onCustomTagClick,
                 newTagState = newTagState,

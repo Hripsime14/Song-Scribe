@@ -3,6 +3,7 @@ package com.song.demos.presentation.addnewdemo
 import android.Manifest
 import android.content.pm.PackageManager
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -19,6 +20,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -30,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.song.core.domain.validation.DemoValidator
 import com.song.core.presentation.designsystem.components.SongScribeToolbar
 import com.song.core.presentation.designsystem.theme.SongScribeTheme
 import com.song.core.presentation.ui.util.ObserveAsEvents
@@ -40,6 +45,7 @@ import com.song.demos.presentation.addnewdemo.components.GuidanceSection
 import com.song.demos.presentation.addnewdemo.components.LyricsSection
 import com.song.demos.presentation.addnewdemo.components.RecordingSection
 import com.song.demos.presentation.addnewdemo.components.TagSection
+import com.song.demos.presentation.common.DiscardChangesDialog
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -75,6 +81,23 @@ fun AddNewDemoScreenRoot(
         }
     }
 
+    var showDiscardDialog by remember { mutableStateOf(false) }
+    val requestClose = {
+        if (viewModel.hasUnsavedChanges()) showDiscardDialog = true else onSaveChanges()
+    }
+
+    BackHandler(onBack = requestClose)
+
+    if (showDiscardDialog) {
+        DiscardChangesDialog(
+            onKeepEditing = { showDiscardDialog = false },
+            onDiscard = {
+                showDiscardDialog = false
+                onSaveChanges()
+            }
+        )
+    }
+
     AddNewDemoScreen(
         state = state,
         onAction = { action ->
@@ -91,7 +114,7 @@ fun AddNewDemoScreenRoot(
                 viewModel.onAction(action)
             }
         },
-        onCloseClick = onSaveChanges
+        onCloseClick = requestClose
     )
 }
 
@@ -110,9 +133,12 @@ fun AddNewDemoScreen(
                 showCloseButton = true,
                 onCloseClick = onCloseClick,
                 endButton = {
-                    val canCreate = state.titleTextState.text.isNotBlank() &&
-                            state.recordings.isNotEmpty() &&
-                            !state.isSaving
+                    val canCreate = DemoValidator.canSaveDemo(
+                        title = state.titleTextState.text.toString().trim(),
+                        recordingCount = state.recordings.size,
+                        isSaving = state.isSaving,
+                        isRecording = state.isRecording
+                    )
                     TextButton(
                         onClick = { onAction(AddNewDemoAction.OnCreateDemoClick) },
                         enabled = canCreate
@@ -150,6 +176,7 @@ fun AddNewDemoScreen(
                         isRecording = state.isRecording,
                         recordingSeconds = state.recordingSeconds,
                         recordings = state.recordings,
+                        canRecord = DemoValidator.canAddRecording(state.recordings.size),
                         onToggleRecording = {
                             onAction(AddNewDemoAction.OnToggleRecording)
                         },
@@ -179,6 +206,9 @@ fun AddNewDemoScreen(
                         tags = state.tagOptions,
                         onTagClick = { tag ->
                             onAction(AddNewDemoAction.OnTagClick(tag))
+                        },
+                        onRemoveTagClick = { tag ->
+                            onAction(AddNewDemoAction.OnRemoveCustomTagClick(tag))
                         },
                         onAddCustomTag = {
                             onAction(AddNewDemoAction.OnAddCustomTagClick)

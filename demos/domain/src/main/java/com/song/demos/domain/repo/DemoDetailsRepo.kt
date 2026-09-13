@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface DemoDetailsRepo {
     fun getDemoDetails(demoId: String): Flow<Demo?>
     suspend fun saveDemoDetailsChanged(demo: Demo)
+    suspend fun isTitleTaken(title: String, excludeId: String): Boolean
 }

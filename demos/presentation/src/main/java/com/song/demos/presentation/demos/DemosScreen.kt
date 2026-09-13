@@ -169,7 +169,9 @@ fun DemosScreen(
                 )
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(R.string.recordings, state.demoCount),
+                    text = if (state.demoCount > 0)
+                        stringResource(R.string.recordings, state.demoCount)
+                    else "",
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.secondary
                 )

@@ -31,6 +31,12 @@
     <string name="delete_demo_message">"«%1$s»-ը և դրա բոլոր ձայնագրությունները վերջնականապես կջնջվեն։ Այս գործողությունը հնարավոր չէ հետարկել։"</string>
     <string name="delete">Ջնջել</string>
     <string name="cancel">Չեղարկել</string>
+    <string name="max_recordings_reached">Հասել եք 10 ձայնագրության սահմանաչափին</string>
+    <string name="no_lyrics_hint">Դեռ բառեր չկան․ հպեք վերևում՝ ավելացնելու համար</string>
+    <string name="discard_changes_title">Չեղարկե՞լ փոփոխությունները</string>
+    <string name="discard_changes_message">"Դուք ունեք չպահպանված փոփոխություններ։ Եթե հիմա հեռանաք, դրանք կկորչեն։"</string>
+    <string name="keep_editing">Շարունակել խմբագրումը</string>
+    <string name="discard">Չեղարկել</string>
     <string name="demo_details">Դեմոյի մանրամասներ</string>
     <string name="save">Պահպանել</string>
     <string name="new_recording">ՆՈՐ ՁԱՅՆԱԳՐՈՒԹՅՈՒՆ</string>
@@ -45,11 +51,17 @@
     <string name="language_armenian">Հայերեն</string>
     <string name="language_russian">Ռուսերեն</string>
     <string name="no_genres_added_tap_to_add">Չկան ընտրված ժանրեր - սեղմեք ավելացնելու համար</string>
+    <string name="remove_tag">Ջնջել թեգը</string>
     <string name="tap_star_to_set_primary">հպեք ★-ին՝ հիմնականը սահմանելու համար</string>
 
     <plurals name="word_count">
         <item quantity="one">%d բառ</item>
         <item quantity="other">%d բառ</item>
+    </plurals>
+
+    <plurals name="chars_remaining">
+        <item quantity="one">Մնացել է %d նշան</item>
+        <item quantity="other">Մնացել է %d նշան</item>
     </plurals>
 
     <plurals name="takes_count">

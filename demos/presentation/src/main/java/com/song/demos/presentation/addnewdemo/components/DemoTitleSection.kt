@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -19,8 +21,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.song.core.domain.validation.DemoValidationRules
 import com.song.core.presentation.designsystem.extension.addDefaultTopPadding
 import com.song.core.presentation.designsystem.theme.SongScribeTheme
 import com.song.demos.presentation.R
@@ -48,6 +52,7 @@ fun DemoTitleSection(
         OutlinedTextField(
             modifier = modifier.fillMaxWidth(),
             state = titleState,
+            inputTransformation = InputTransformation.maxLength(DemoValidationRules.TITLE_MAX_LENGTH),
             lineLimits = TextFieldLineLimits.SingleLine,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             placeholder = {
@@ -55,6 +60,23 @@ fun DemoTitleSection(
                     text = stringResource(R.string.give_your_demo_name),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary,
+                )
+            },
+            supportingText = {
+                val length = titleState.text.length
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp)
+                    ,
+                    textAlign = TextAlign.End,
+                    text = "$length/${DemoValidationRules.TITLE_MAX_LENGTH}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = if (length >= DemoValidationRules.TITLE_MAX_LENGTH) {
+                        MaterialTheme.colorScheme.error
+                    } else {
+                        MaterialTheme.colorScheme.secondary
+                    }
                 )
             },
             colors = OutlinedTextFieldDefaults.colors(

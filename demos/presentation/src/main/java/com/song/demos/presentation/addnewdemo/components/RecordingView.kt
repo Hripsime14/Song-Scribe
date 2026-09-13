@@ -24,6 +24,7 @@ fun RecordingView(
     modifier: Modifier = Modifier,
     isRecording: Boolean = false,
     recordingSeconds: Int = 0,
+    enabled: Boolean = true,
     onToggleRecording: () -> Unit = {},
 ) {
     Column(
@@ -36,7 +37,8 @@ fun RecordingView(
             tint = if (isRecording) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
             shape = CircleShape,
             iconSize = 48.dp,
-            contentPadding = 20.dp
+            contentPadding = 20.dp,
+            enabled = enabled
         )
         Text(
             modifier = Modifier
@@ -48,10 +50,10 @@ fun RecordingView(
         Text(
             modifier = Modifier
                 .addDefaultTopPadding(),
-            text = if (isRecording) {
-                stringResource(R.string.recording)
-            } else {
-                stringResource(R.string.tap_to_record)
+            text = when {
+                isRecording -> stringResource(R.string.recording)
+                !enabled -> stringResource(R.string.max_recordings_reached)
+                else -> stringResource(R.string.tap_to_record)
             },
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.secondary,

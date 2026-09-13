@@ -31,14 +31,16 @@ fun SongScribeButton(
     tint: Color = MaterialTheme.colorScheme.primary,
     iconSize: Dp = 24.dp,
     contentPadding: Dp = 8.dp,
+    enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
     Box(
         modifier = modifier
             .clip(shape)
-            .background(color = tint)
+            .background(color = if (enabled) tint else tint.copy(alpha = 0.3f))
             .padding(contentPadding)
             .clickable(
+                enabled = enabled,
                 onClick = onClick,
                 interactionSource = null,
                 indication = null

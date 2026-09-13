@@ -1,20 +1,28 @@
 package com.song.demos.presentation.addnewdemo.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.LocalOffer
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
@@ -38,6 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.song.core.domain.validation.DemoValidationRules
 import com.song.core.presentation.designsystem.components.SongScribePositiveButton
 import com.song.core.presentation.designsystem.extension.addDefaultTopPadding
 import com.song.core.presentation.designsystem.theme.SongScribeTheme
@@ -50,13 +59,14 @@ fun TagSection(
     modifier: Modifier = Modifier,
     tags: List<TagModel>,
     onTagClick: (TagModel) -> Unit = {},
+    onRemoveTagClick: (TagModel) -> Unit = {},
     onAddCustomTag: () -> Unit = {},
     onCustomTagClick: () -> Unit = {},
     newTagState: TextFieldState,
     addNewTag: Boolean = false,
     showTags: Boolean = true
 ) {
-    Column (
+    Column(
         modifier = modifier
             .fillMaxWidth()
             .addDefaultTopPadding()
@@ -97,7 +107,9 @@ fun TagSection(
                 containerColor = Color.Transparent,
             )
         }
-        if (addNewTag) {
+        AnimatedVisibility(
+            visible = addNewTag
+        ) {
             Row(
                 modifier = Modifier
                     .padding(vertical = 8.dp, horizontal = 16.dp)
@@ -111,6 +123,7 @@ fun TagSection(
                         .fillMaxWidth()
                         .weight(1f),
                     state = newTagState,
+                    inputTransformation = InputTransformation.maxLength(DemoValidationRules.TAG_MAX_LENGTH),
                     shape = RoundedCornerShape(8.dp),
                     lineLimits = TextFieldLineLimits.SingleLine,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
@@ -143,38 +156,59 @@ fun TagSection(
         ) {
             tags.forEach { tag ->
                 val isSelected = tag.isSelected
-                AssistChip(
-                    onClick = { onTagClick(tag) },
-                    label = {
-                        Text(
-                            text = tag.name,
-                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                            style = MaterialTheme.typography.bodyMedium
+                Box {
+                    AssistChip(
+                        modifier = Modifier.padding(top = 6.dp, end = 6.dp),
+                        onClick = { onTagClick(tag) },
+                        label = {
+                            Text(
+                                text = tag.name,
+                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        },
+                        shape = RoundedCornerShape(32.dp),
+                        colors = AssistChipDefaults.assistChipColors(
+                            containerColor = if (isSelected) {
+                                MaterialTheme.colorScheme.primaryContainer
+                            } else {
+                                Color.Transparent
+                            },
+                            labelColor = if (isSelected) {
+                                MaterialTheme.colorScheme.onSurface
+                            } else {
+                                MaterialTheme.colorScheme.secondary
+                            }
+                        ),
+                        border = AssistChipDefaults.assistChipBorder(
+                            enabled = true,
+                            borderColor = if (isSelected) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.outline
+                            },
+                            borderWidth = 0.5.dp
                         )
-                    },
-                    shape = RoundedCornerShape(32.dp),
-                    colors = AssistChipDefaults.assistChipColors(
-                        containerColor = if (isSelected) {
-                            MaterialTheme.colorScheme.primaryContainer
-                        } else {
-                            Color.Transparent
-                        },
-                        labelColor = if (isSelected) {
-                            MaterialTheme.colorScheme.onSurface
-                        } else {
-                            MaterialTheme.colorScheme.secondary
-                        }
-                    ),
-                    border = AssistChipDefaults.assistChipBorder(
-                        enabled = true,
-                        borderColor = if (isSelected) {
-                            MaterialTheme.colorScheme.primary
-                        } else {
-                            MaterialTheme.colorScheme.outline
-                        },
-                        borderWidth = 0.5.dp
                     )
-                )
+                    if (tag.isCustom) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = stringResource(R.string.remove_tag),
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .size(16.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.outline)
+                                .clickable(
+                                    onClick = { onRemoveTagClick(tag) },
+                                    interactionSource = null,
+                                    indication = null
+                                )
+                                .padding(3.dp),
+                            tint = MaterialTheme.colorScheme.surface
+                        )
+                    }
+                }
             }
         }
     }
