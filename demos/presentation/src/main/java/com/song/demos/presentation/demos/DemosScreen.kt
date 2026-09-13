@@ -167,16 +167,6 @@ fun DemosScreen(
                     modifier = Modifier.fillMaxWidth(),
                     state = searchState
                 )
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = if (state.demoCount > 1)
-                        stringResource(R.string.recordings, state.demoCount)
-                    else if (state.demoCount == 1)
-                        stringResource(R.string.recording_singular, state.demoCount)
-                    else "",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.secondary
-                )
                 when {
                     state.isLoading -> Box(
                         modifier = Modifier.fillMaxSize(),

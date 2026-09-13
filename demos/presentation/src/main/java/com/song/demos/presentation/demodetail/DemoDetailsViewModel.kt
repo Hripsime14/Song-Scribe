@@ -176,7 +176,7 @@ class DemoDetailsViewModel(
 
         val demo = Demo(
             id = currentState.demoId,
-            title = title,
+            title = title.ifBlank { getApplication<Application>().getString(R.string.untitled_demo) },
             createdAtMillis = currentState.createdAtMillis,
             colorLabel = selectedColor.color.toArgb().toLong(),
             genres = currentState.tagOptions.filter { it.isSelected }.map { it.name },

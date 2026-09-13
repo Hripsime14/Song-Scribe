@@ -3,14 +3,14 @@
     <string name="my_demos">Իմ դեմոները</string>
     <string name="search">Որոնում</string>
     <string name="recordings">%d ձայնագրություն</string>
-    <string name="recording_singular">%d ձայնագրություն</string>
     <string name="no_demos_yet">Դեռ դեմոներ չկան</string>
     <string name="first_take">Առաջին տարբերակ</string>
     <string name="take_number">Տարբերակ %d</string>
     <string name="set_as_primary_recording">Սահմանել որպես հիմնական ձայնագրություն</string>
     <string name="primary_recording">Հիմնական ձայնագրություն</string>
     <string name="give_your_demo_name">Անվանեք ձեր դեմոն...</string>
-    <string name="demo_title">ԴԵՄՈՅԻ ԱՆՈՒՆ*</string>
+    <string name="untitled_demo">Անանուն դեմո</string>
+    <string name="demo_title">ԴԵՄՈՅԻ ԱՆՈՒՆ</string>
     <string name="color_label">ԳՈՒՅՆԻ ԴՐՈՇՄ</string>
     <string name="tags">ԹԵԳԵՐ</string>
     <string name="lyrics_notes">ԽՈՍՔԵՐ ԵՎ ՆՇՈՒՄՆԵՐ</string>
@@ -21,7 +21,6 @@
     <string name="demo_creation_failed">Դեմոն ստեղծել չհաջողվեց</string>
     <string name="add_tag">Ավելացնել թեգ...</string>
     <string name="add">Ավելացնել</string>
-    <string name="record_something">Ձայնագրեք ինչ-որ բան՝ դեմո ստեղծելու համար</string>
     <string name="recording">Ձայնագրվում է...</string>
     <string name="tap_to_record">Հպեք՝ ձայնագրելու համար</string>
     <string name="delete_recording">Ջնջել ձայնագրությունը</string>
@@ -33,7 +32,6 @@
     <string name="delete">Ջնջել</string>
     <string name="cancel">Չեղարկել</string>
     <string name="max_recordings_reached">Հասել եք 10 ձայնագրության սահմանաչափին</string>
-    <string name="no_lyrics_hint">Դեռ բառեր չկան․ հպեք վերևում՝ ավելացնելու համար</string>
     <string name="discard_changes_title">Չեղարկե՞լ փոփոխությունները</string>
     <string name="discard_changes_message">"Դուք ունեք չպահպանված փոփոխություններ։ Եթե հիմա հեռանաք, դրանք կկորչեն։"</string>
     <string name="keep_editing">Շարունակել խմբագրումը</string>

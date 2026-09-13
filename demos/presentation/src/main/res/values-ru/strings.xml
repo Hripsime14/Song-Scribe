@@ -3,14 +3,14 @@
     <string name="my_demos">Мои демо</string>
     <string name="search">Поиск</string>
     <string name="recordings">%d записей</string>
-    <string name="recording_singular">%d запись</string>
     <string name="no_demos_yet">Демо пока нет</string>
     <string name="first_take">Первый дубль</string>
     <string name="take_number">Дубль %d</string>
     <string name="set_as_primary_recording">Установить как основную запись</string>
     <string name="primary_recording">Основная запись</string>
     <string name="give_your_demo_name">Дайте название вашему демо...</string>
-    <string name="demo_title">НАЗВАНИЕ ДЕМО*</string>
+    <string name="untitled_demo">Демо без названия</string>
+    <string name="demo_title">НАЗВАНИЕ ДЕМО</string>
     <string name="color_label">ЦВЕТОВАЯ МЕТКА</string>
     <string name="tags">ТЕГИ</string>
     <string name="lyrics_notes">ТЕКСТ И ЗАМЕТКИ</string>
@@ -21,7 +21,6 @@
     <string name="demo_creation_failed">Не удалось создать демо</string>
     <string name="add_tag">Добавить тег...</string>
     <string name="add">Добавить</string>
-    <string name="record_something">Запишите что-нибудь, чтобы создать демо</string>
     <string name="recording">Идёт запись...</string>
     <string name="tap_to_record">Нажмите, чтобы записать</string>
     <string name="delete_recording">Удалить запись</string>
@@ -33,7 +32,6 @@
     <string name="delete">Удалить</string>
     <string name="cancel">Отмена</string>
     <string name="max_recordings_reached">Достигнут лимит в 10 записей</string>
-    <string name="no_lyrics_hint">Пока нет текста песни — нажмите выше, чтобы добавить</string>
     <string name="discard_changes_title">Отменить изменения?</string>
     <string name="discard_changes_message">"У вас есть несохранённые изменения. Если вы уйдёте сейчас, они будут потеряны."</string>
     <string name="keep_editing">Продолжить редактирование</string>

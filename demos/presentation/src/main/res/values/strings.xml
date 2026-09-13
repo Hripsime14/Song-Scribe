@@ -3,14 +3,14 @@
     <string name="my_demos">My demos</string>
     <string name="search">Search</string>
     <string name="recordings">%d recordings</string>
-    <string name="recording_singular">%d recording</string>
     <string name="no_demos_yet">No demos yet</string>
     <string name="first_take">First take</string>
     <string name="take_number">Take %d</string>
     <string name="set_as_primary_recording">Set as primary recording</string>
     <string name="primary_recording">Primary recording</string>
     <string name="give_your_demo_name">Give your demo a name...</string>
-    <string name="demo_title">DEMO TITLE*</string>
+    <string name="untitled_demo">Untitled Demo</string>
+    <string name="demo_title">DEMO TITLE</string>
     <string name="color_label">COLOR LABEL</string>
     <string name="tags">TAGS</string>
     <string name="lyrics_notes">LYRICS &amp; NOTES</string>
@@ -21,7 +21,6 @@
     <string name="demo_creation_failed">Could not create the demo</string>
     <string name="add_tag">Add tag...</string>
     <string name="add">Add</string>
-    <string name="record_something">Record something to create a demo</string>
     <string name="recording">Recording...</string>
     <string name="tap_to_record">Tap to Record</string>
     <string name="delete_recording">Delete recording</string>
@@ -33,7 +32,6 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="max_recordings_reached">Maximum 10 recordings reached</string>
-    <string name="no_lyrics_hint">No lyrics yet — tap above to add them</string>
     <string name="discard_changes_title">Discard changes?</string>
     <string name="discard_changes_message">You have unsaved changes. If you leave now, they\'ll be lost.</string>
     <string name="keep_editing">Keep editing</string>

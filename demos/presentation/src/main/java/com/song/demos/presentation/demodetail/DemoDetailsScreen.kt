@@ -205,7 +205,6 @@ fun DemoDetailsScreen(
                     DemoDetailsSections.Info -> InfoSection(
                         createdTime = state.createdAtMillis.formatDate(),
                         remainingChars = DemoValidationRules.LYRICS_MAX_LENGTH - state.lyricsTextState.text.length,
-                        showLyricsHint = state.lyricsTextState.text.isBlank() && state.recordings.isNotEmpty()
                     )
                     DemoDetailsSections.Lyrics -> LyricsSection(
                         lyricsState = state.lyricsTextState

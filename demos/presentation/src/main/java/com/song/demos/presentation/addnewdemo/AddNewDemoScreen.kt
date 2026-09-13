@@ -41,7 +41,6 @@ import com.song.core.presentation.ui.util.ObserveAsEvents
 import com.song.demos.presentation.R
 import com.song.demos.presentation.addnewdemo.components.ColorLabelSection
 import com.song.demos.presentation.addnewdemo.components.DemoTitleSection
-import com.song.demos.presentation.addnewdemo.components.GuidanceSection
 import com.song.demos.presentation.addnewdemo.components.LyricsSection
 import com.song.demos.presentation.addnewdemo.components.RecordingSection
 import com.song.demos.presentation.addnewdemo.components.TagSection
@@ -157,74 +156,77 @@ fun AddNewDemoScreen(
         Column(
             modifier = Modifier
                 .padding(padding)
-                .padding(horizontal = 16.dp)
-                .verticalScroll(rememberScrollState())
-                .clickable(
-                    interactionSource = null,
-                    indication = null,
-                    onClick = {
-                        focusManager.clearFocus()
-                        keyboardController?.hide()
-                    }
-                ),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .fillMaxSize()
         ) {
-            state.sections.forEach { section ->
-                when (section) {
-                    NewDemoSections.Recording -> RecordingSection(
-                        isRecording = state.isRecording,
-                        recordingSeconds = state.recordingSeconds,
-                        recordings = state.recordings,
-                        canRecord = DemoValidator.canAddRecording(state.recordings.size),
-                        onToggleRecording = {
-                            onAction(AddNewDemoAction.OnToggleRecording)
-                        },
-                        onPlayPauseRecording = { recordingId ->
-                            onAction(AddNewDemoAction.OnTogglePlayback(recordingId))
-                        },
-                        onSetPrimaryRecording = { recordingId ->
-                            onAction(AddNewDemoAction.OnSetPrimaryRecording(recordingId))
-                        },
-                        onDeleteRecording = { recordingId ->
-                            onAction(AddNewDemoAction.OnDeleteRecording(recordingId))
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .verticalScroll(rememberScrollState())
+                    .clickable(
+                        interactionSource = null,
+                        indication = null,
+                        onClick = {
+                            focusManager.clearFocus()
+                            keyboardController?.hide()
                         }
-                    )
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                state.sections.forEach { section ->
+                    when (section) {
+                        NewDemoSections.Recording -> RecordingSection(
+                            isRecording = state.isRecording,
+                            recordingSeconds = state.recordingSeconds,
+                            recordings = state.recordings,
+                            canRecord = DemoValidator.canAddRecording(state.recordings.size),
+                            onToggleRecording = {
+                                onAction(AddNewDemoAction.OnToggleRecording)
+                            },
+                            onPlayPauseRecording = { recordingId ->
+                                onAction(AddNewDemoAction.OnTogglePlayback(recordingId))
+                            },
+                            onSetPrimaryRecording = { recordingId ->
+                                onAction(AddNewDemoAction.OnSetPrimaryRecording(recordingId))
+                            },
+                            onDeleteRecording = { recordingId ->
+                                onAction(AddNewDemoAction.OnDeleteRecording(recordingId))
+                            }
+                        )
 
-                    NewDemoSections.DemoTitle -> DemoTitleSection(
-                        titleState = state.titleTextState
-                    )
+                        NewDemoSections.DemoTitle -> DemoTitleSection(
+                            titleState = state.titleTextState
+                        )
 
-                    NewDemoSections.ColorLabel -> ColorLabelSection(
-                        colors = state.colorOptions,
-                        onColorSelect = { color ->
-                            onAction(AddNewDemoAction.OnColorSelect(color))
-                        }
-                    )
+                        NewDemoSections.ColorLabel -> ColorLabelSection(
+                            colors = state.colorOptions,
+                            onColorSelect = { color ->
+                                onAction(AddNewDemoAction.OnColorSelect(color))
+                            }
+                        )
 
-                    NewDemoSections.Tags -> TagSection(
-                        tags = state.tagOptions,
-                        onTagClick = { tag ->
-                            onAction(AddNewDemoAction.OnTagClick(tag))
-                        },
-                        onRemoveTagClick = { tag ->
-                            onAction(AddNewDemoAction.OnRemoveCustomTagClick(tag))
-                        },
-                        onAddCustomTag = {
-                            onAction(AddNewDemoAction.OnAddCustomTagClick)
-                        },
-                        onCustomTagClick = {
-                            onAction(AddNewDemoAction.OnCustomTagClick)
-                        },
-                        newTagState = state.newTagTextState,
-                        addNewTag = state.showAddTagSection
-                    )
+                        NewDemoSections.Tags -> TagSection(
+                            tags = state.tagOptions,
+                            onTagClick = { tag ->
+                                onAction(AddNewDemoAction.OnTagClick(tag))
+                            },
+                            onRemoveTagClick = { tag ->
+                                onAction(AddNewDemoAction.OnRemoveCustomTagClick(tag))
+                            },
+                            onAddCustomTag = {
+                                onAction(AddNewDemoAction.OnAddCustomTagClick)
+                            },
+                            onCustomTagClick = {
+                                onAction(AddNewDemoAction.OnCustomTagClick)
+                            },
+                            newTagState = state.newTagTextState,
+                            addNewTag = state.showAddTagSection
+                        )
 
-                    NewDemoSections.Lyrics -> LyricsSection(
-                        lyricsState = state.lyricsTextState
-                    )
-
-                    NewDemoSections.Info -> GuidanceSection()
+                        NewDemoSections.Lyrics -> LyricsSection(
+                            lyricsState = state.lyricsTextState
+                        )
+                    }
                 }
             }
         }

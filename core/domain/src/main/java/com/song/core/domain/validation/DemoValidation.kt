@@ -11,7 +11,7 @@ object DemoValidationRules {
 
 object DemoValidator {
     fun isTitleValid(title: String): Boolean =
-        title.isNotBlank() && title.length <= DemoValidationRules.TITLE_MAX_LENGTH
+        title.length <= DemoValidationRules.TITLE_MAX_LENGTH
 
     fun canAddRecording(currentCount: Int): Boolean =
         currentCount < DemoValidationRules.MAX_RECORDINGS

@@ -7,9 +7,8 @@ sealed interface NewDemoSections {
     data object ColorLabel : NewDemoSections
     data object Tags : NewDemoSections
     data object Lyrics : NewDemoSections
-    data object Info : NewDemoSections
 
     companion object {
-        val default = listOf(Recording, DemoTitle, ColorLabel, Tags, Lyrics, Info)
+        val default = listOf(Recording, DemoTitle, ColorLabel, Tags, Lyrics)
     }
 }

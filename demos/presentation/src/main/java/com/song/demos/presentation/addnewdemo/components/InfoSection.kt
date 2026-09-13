@@ -22,7 +22,6 @@ fun InfoSection(
     modifier: Modifier = Modifier,
     createdTime: String = "May 14, 2026",
     remainingChars: Int = 0,
-    showLyricsHint: Boolean = false
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row(
@@ -42,16 +41,6 @@ fun InfoSection(
             Text(
                 style = MaterialTheme.typography.bodyMedium,
                 text = pluralStringResource(R.plurals.chars_remaining, remainingChars, remainingChars),
-                color = MaterialTheme.colorScheme.secondary
-            )
-        }
-        if (showLyricsHint) {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                style = MaterialTheme.typography.bodySmall,
-                text = stringResource(R.string.no_lyrics_hint),
                 color = MaterialTheme.colorScheme.secondary
             )
         }

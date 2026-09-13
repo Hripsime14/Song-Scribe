@@ -290,7 +290,7 @@ class AddNewDemoViewModel(
             ?: currentState.colorOptions.first()
         val demo = Demo(
             id = UUID.randomUUID().toString(),
-            title = title,
+            title = title.ifBlank { getApplication<Application>().getString(R.string.untitled_demo) },
             createdAtMillis = createdAtMillis,
             colorLabel = selectedColor.color.toArgb().toLong(),
             genres = currentState.tagOptions.filter { it.isSelected }.map { it.name },
