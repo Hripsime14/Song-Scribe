@@ -3,6 +3,7 @@
     <string name="my_demos">Իմ դեմոները</string>
     <string name="search">Որոնում</string>
     <string name="recordings">%d ձայնագրություն</string>
+    <string name="recording_singular">%d ձայնագրություն</string>
     <string name="no_demos_yet">Դեռ դեմոներ չկան</string>
     <string name="first_take">Առաջին տարբերակ</string>
     <string name="take_number">Տարբերակ %d</string>

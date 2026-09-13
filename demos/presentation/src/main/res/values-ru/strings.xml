@@ -3,6 +3,7 @@
     <string name="my_demos">Мои демо</string>
     <string name="search">Поиск</string>
     <string name="recordings">%d записей</string>
+    <string name="recording_singular">%d запись</string>
     <string name="no_demos_yet">Демо пока нет</string>
     <string name="first_take">Первый дубль</string>
     <string name="take_number">Дубль %d</string>

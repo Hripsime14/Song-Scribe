@@ -3,6 +3,7 @@
     <string name="my_demos">My demos</string>
     <string name="search">Search</string>
     <string name="recordings">%d recordings</string>
+    <string name="recording_singular">%d recording</string>
     <string name="no_demos_yet">No demos yet</string>
     <string name="first_take">First take</string>
     <string name="take_number">Take %d</string>
