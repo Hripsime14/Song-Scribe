@@ -64,6 +64,17 @@ fun DemoDetailsScreenRoot(
 
     }
 
+    ObserveAsEvents(flow = viewModel.events) { event ->
+        when (event) {
+            DemoDetailsEvent.DemoSaved -> onSaveChanges()
+            is DemoDetailsEvent.DemoSaveFailed -> Toast.makeText(
+                context,
+                event.message ?: context.getString(R.string.demo_save_failed),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -105,7 +116,6 @@ fun DemoDetailsScreenRoot(
                 viewModel.onAction(action)
             }
         },
-        onSaveClick = onSaveChanges,
         onBackClick = requestBack
     )
 }
@@ -115,7 +125,6 @@ fun DemoDetailsScreen(
     state: DemoDetailsState,
     modifier: Modifier = Modifier,
     onAction: (DemoDetailsAction) -> Unit = {},
-    onSaveClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
     Scaffold(
@@ -134,10 +143,7 @@ fun DemoDetailsScreen(
                         isAddingRecording = state.isAddingRecording
                     )
                     SongScribePositiveButton(
-                        onClick = {
-                            onAction(DemoDetailsAction.OnSaveDemoClick)
-                            onSaveClick()
-                        },
+                        onClick = { onAction(DemoDetailsAction.OnSaveDemoClick) },
                         enabled = canCreate,
                         text = stringResource(R.string.save),
                         containerColor = MaterialTheme.colorScheme.primary,
@@ -222,9 +228,7 @@ private fun DemoDetailsScreenPreview() {
     SongScribeTheme {
         DemoDetailsScreen(
             state = DemoDetailsState(),
-            modifier = TODO(),
-            onAction = TODO(),
-            onSaveClick = TODO(),
+            onAction = {},
             onBackClick = {}
         )
     }

@@ -1,4 +1,6 @@
 package com.song.demos.presentation.demodetail
 
-class DemoDetailsEvent {
+sealed interface DemoDetailsEvent {
+    data object DemoSaved : DemoDetailsEvent
+    data class DemoSaveFailed(val message: String?) : DemoDetailsEvent
 }

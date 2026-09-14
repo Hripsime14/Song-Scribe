@@ -19,6 +19,7 @@
     <string name="new_demo">Նոր դեմո</string>
     <string name="create">Ստեղծել</string>
     <string name="demo_creation_failed">Դեմոն ստեղծել չհաջողվեց</string>
+    <string name="demo_save_failed">Դեմոն պահպանել չհաջողվեց</string>
     <string name="add_tag">Ավելացնել թեգ...</string>
     <string name="add">Ավելացնել</string>
     <string name="recording">Ձայնագրվում է...</string>

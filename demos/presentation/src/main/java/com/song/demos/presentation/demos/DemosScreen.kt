@@ -24,9 +24,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -76,6 +78,14 @@ fun DemosScreen(
     searchState: TextFieldState = rememberTextFieldState(),
     onAction: (DemosScreenAction) -> Unit = {},
 ) {
+    val focusManager = LocalFocusManager.current
+    LaunchedEffect(Unit) {
+        // The search bar is the first focusable field on screen, and Android's default
+        // View-focus behavior can leave it (and only it, not the keyboard, thanks to
+        // windowSoftInputMode="stateHidden") focused right on launch. Clear it explicitly.
+        focusManager.clearFocus(force = true)
+    }
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {

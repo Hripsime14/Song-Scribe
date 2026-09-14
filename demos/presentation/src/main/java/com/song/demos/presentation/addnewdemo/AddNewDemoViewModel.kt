@@ -286,11 +286,12 @@ class AddNewDemoViewModel(
         }
 
         val createdAtMillis = System.currentTimeMillis()
+        val resolvedTitle = title.ifBlank { getApplication<Application>().getString(R.string.untitled_demo) }
         val selectedColor = currentState.colorOptions.firstOrNull { it.isSelected }
             ?: currentState.colorOptions.first()
         val demo = Demo(
             id = UUID.randomUUID().toString(),
-            title = title.ifBlank { getApplication<Application>().getString(R.string.untitled_demo) },
+            title = resolvedTitle,
             createdAtMillis = createdAtMillis,
             colorLabel = selectedColor.color.toArgb().toLong(),
             genres = currentState.tagOptions.filter { it.isSelected }.map { it.name },

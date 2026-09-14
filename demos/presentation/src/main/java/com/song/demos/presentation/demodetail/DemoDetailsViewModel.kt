@@ -174,9 +174,10 @@ class DemoDetailsViewModel(
         val selectedColor = currentState.colorOptions.firstOrNull { it.isSelected }
             ?: currentState.colorOptions.first()
 
+        val resolvedTitle = title.ifBlank { getApplication<Application>().getString(R.string.untitled_demo) }
         val demo = Demo(
             id = currentState.demoId,
-            title = title.ifBlank { getApplication<Application>().getString(R.string.untitled_demo) },
+            title = resolvedTitle,
             createdAtMillis = currentState.createdAtMillis,
             colorLabel = selectedColor.color.toArgb().toLong(),
             genres = currentState.tagOptions.filter { it.isSelected }.map { it.name },
@@ -195,8 +196,13 @@ class DemoDetailsViewModel(
 
         viewModelScope.launch {
             _state.update { it.copy(isSaving = true) }
-            runCatching { demoDetailsRepo.saveDemoDetailsChanged(demo) }
+            val result = runCatching { demoDetailsRepo.saveDemoDetailsChanged(demo) }
             _state.update { it.copy(isSaving = false) }
+            result
+                .onSuccess { eventChannel.send(DemoDetailsEvent.DemoSaved) }
+                .onFailure { throwable ->
+                    eventChannel.send(DemoDetailsEvent.DemoSaveFailed(throwable.message))
+                }
         }
     }
 

@@ -48,9 +48,6 @@ interface DemoDao {
     @Query("SELECT id FROM recording WHERE demoId = :demoId")
     suspend fun getRecordingIdsForDemo(demoId: String): List<String>
 
-    @Query("SELECT EXISTS(SELECT 1 FROM demo WHERE title = :title COLLATE NOCASE AND id != :excludeId)")
-    suspend fun existsDemoWithTitle(title: String, excludeId: String = ""): Boolean
-
     @Transaction
     suspend fun upsertDemoWithRecordings(demoWithRecordings: DemoWithRecordings) {
         upsertDemo(demoWithRecordings.demo)

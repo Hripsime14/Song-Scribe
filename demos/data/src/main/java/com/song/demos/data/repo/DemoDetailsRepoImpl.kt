@@ -18,8 +18,4 @@ class DemoDetailsRepoImpl(
     override suspend fun saveDemoDetailsChanged(demo: Demo) {
         demoDao.upsertDemoWithRecordings(demo.toDemoWithRecordings())
     }
-
-    override suspend fun isTitleTaken(title: String, excludeId: String): Boolean {
-        return demoDao.existsDemoWithTitle(title, excludeId)
-    }
 }
