@@ -50,6 +50,7 @@
     <string name="language_english">Անգլերեն</string>
     <string name="language_armenian">Հայերեն</string>
     <string name="language_russian">Ռուսերեն</string>
+    <string name="privacy_policy">Գաղտնիության քաղաքականություն</string>
     <string name="no_genres_added_tap_to_add">Չկան ընտրված ժանրեր - սեղմեք ավելացնելու համար</string>
     <string name="remove_tag">Ջնջել թեգը</string>
     <string name="tap_star_to_set_primary">հպեք ★-ին՝ հիմնականը սահմանելու համար</string>

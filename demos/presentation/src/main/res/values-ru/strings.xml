@@ -50,6 +50,7 @@
     <string name="language_english">Английский</string>
     <string name="language_armenian">Армянский</string>
     <string name="language_russian">Русский</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
     <string name="no_genres_added_tap_to_add">"Жанры не добавлены — нажмите, чтобы добавить.</string>
     <string name="remove_tag">Удалить тег</string>
     <string name="tap_star_to_set_primary">нажмите ★, чтобы сделать основной</string>

@@ -24,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -32,12 +33,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.song.core.domain.settings.ThemeMode
 import com.song.core.presentation.designsystem.extension.addDefaultStartPadding
 import com.song.core.presentation.designsystem.extension.addDefaultTopPadding
+import com.song.core.presentation.designsystem.theme.SongScribeTheme
 import com.song.core.presentation.ui.util.AppLanguage
 import com.song.demos.presentation.R
 import kotlinx.coroutines.launch
@@ -68,76 +73,121 @@ fun SettingsBottomSheet(
         dragHandle = { BottomSheetDefaults.DragHandle() },
         containerColor = MaterialTheme.colorScheme.surface
     ) {
-        Column(
+        SettingsBottomSheetContent(
+            currentThemeMode = currentThemeMode,
+            currentLanguage = currentLanguage,
+            onThemeModeSelected = onThemeModeSelected,
+            onLanguageSelected = onLanguageSelected,
+            onCloseClick = dismissAnimated
+        )
+    }
+}
+
+@Composable
+private fun SettingsBottomSheetContent(
+    currentThemeMode: ThemeMode,
+    currentLanguage: AppLanguage,
+    onThemeModeSelected: (ThemeMode) -> Unit,
+    onLanguageSelected: (AppLanguage) -> Unit,
+    onCloseClick: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier
-                    .padding(vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Settings,
-                    contentDescription = stringResource(com.song.core.presentation.designsystem.R.string.settings),
-                )
-                Text(
-                    modifier = Modifier
-                        .addDefaultStartPadding()
-                        .weight(1f),
-                    text = stringResource(com.song.core.presentation.designsystem.R.string.settings),
-                    style = MaterialTheme.typography.headlineSmall
-                )
-                Icon(
-                    modifier = Modifier
-                        .clickable(enabled = true, onClick = dismissAnimated),
-                    imageVector = Icons.Default.Close,
-                    contentDescription = stringResource(com.song.core.presentation.designsystem.R.string.close),
-                    tint = MaterialTheme.colorScheme.secondary
-                )
-            }
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = stringResource(com.song.core.presentation.designsystem.R.string.settings),
+            )
             Text(
                 modifier = Modifier
-                    .addDefaultTopPadding(),
-                text = stringResource(R.string.appearance),
+                    .addDefaultStartPadding()
+                    .weight(1f),
+                text = stringResource(com.song.core.presentation.designsystem.R.string.settings),
+                style = MaterialTheme.typography.headlineSmall
+            )
+            Icon(
+                modifier = Modifier
+                    .clickable(enabled = true, onClick = onCloseClick),
+                imageVector = Icons.Default.Close,
+                contentDescription = stringResource(com.song.core.presentation.designsystem.R.string.close),
+                tint = MaterialTheme.colorScheme.secondary
+            )
+        }
+        Text(
+            modifier = Modifier
+                .addDefaultTopPadding(),
+            text = stringResource(R.string.appearance),
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.primary
+        )
+        ThemeModeSegmentedControl(
+            selected = currentThemeMode,
+            onSelected = onThemeModeSelected
+        )
+        Row(
+            modifier = Modifier.padding(top = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Default.Language,
+                contentDescription = stringResource(R.string.language),
+            )
+            Text(
+                modifier = Modifier
+                    .addDefaultStartPadding(),
+                text = stringResource(R.string.language),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.primary
             )
-            ThemeModeSegmentedControl(
-                selected = currentThemeMode,
-                onSelected = onThemeModeSelected
+        }
+        AppLanguage.entries.forEach { language ->
+            SettingsOptionRow(
+                label = stringResource(
+                    when (language) {
+                        AppLanguage.ENGLISH -> R.string.language_english
+                        AppLanguage.ARMENIAN -> R.string.language_armenian
+                        AppLanguage.RUSSIAN -> R.string.language_russian
+                    }
+                ),
+                selected = language == currentLanguage,
+                onClick = { onLanguageSelected(language) }
             )
-            Row(
-                modifier = Modifier.padding(top = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Language,
-                    contentDescription = stringResource(R.string.language),
-                )
-                Text(
-                    modifier = Modifier
-                        .addDefaultStartPadding(),
-                    text = stringResource(R.string.language),
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-            AppLanguage.entries.forEach { language ->
-                SettingsOptionRow(
-                    label = stringResource(
-                        when (language) {
-                            AppLanguage.ENGLISH -> R.string.language_english
-                            AppLanguage.ARMENIAN -> R.string.language_armenian
-                            AppLanguage.RUSSIAN -> R.string.language_russian
-                        }
-                    ),
-                    selected = language == currentLanguage,
-                    onClick = { onLanguageSelected(language) }
-                )
-            }
+        }
+        val uriHandler = LocalUriHandler.current
+        Text(
+            modifier = Modifier
+                .padding(8.dp)
+                .clickable(onClick = { uriHandler.openUri(PRIVACY_POLICY_URL) }),
+            text = stringResource(R.string.privacy_policy),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.primary,
+            textDecoration = TextDecoration.Underline
+        )
+    }
+}
+
+private const val PRIVACY_POLICY_URL = "https://hripsime14.github.io/songscribe-privacy/"
+
+@Preview(showBackground = true)
+@Composable
+private fun SettingsBottomSheetPreview() {
+    SongScribeTheme {
+        Surface(color = MaterialTheme.colorScheme.surface) {
+            SettingsBottomSheetContent(
+                currentThemeMode = ThemeMode.LIGHT,
+                currentLanguage = AppLanguage.ENGLISH,
+                onThemeModeSelected = {},
+                onLanguageSelected = {},
+                onCloseClick = {}
+            )
         }
     }
 }
