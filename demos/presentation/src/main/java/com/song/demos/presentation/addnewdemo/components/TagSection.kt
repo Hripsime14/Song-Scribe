@@ -158,7 +158,7 @@ fun TagSection(
                 val isSelected = tag.isSelected
                 Box {
                     AssistChip(
-                        modifier = Modifier.padding(top = 6.dp, end = 6.dp),
+                        modifier = Modifier.padding(end = 6.dp),
                         onClick = { onTagClick(tag) },
                         label = {
                             Text(

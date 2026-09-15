@@ -193,13 +193,17 @@ fun DemosScreen(
                         color = MaterialTheme.colorScheme.error
                     )
 
-                    state.demos.isEmpty() -> Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.no_demos_yet),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.secondary
-                    )
+                    state.demos.isEmpty() -> Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.no_demos_yet),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.secondary
+                        )
+                    }
 
                     else -> LazyColumn(
                         modifier = Modifier.fillMaxSize(),
